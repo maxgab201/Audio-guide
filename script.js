@@ -1,7 +1,4 @@
-// --- VERIFICACIÓN DE CARGA ---
-// alert("El script se cargó correctamente. Si ves esto, el JS está conectado.");
-
-// --- DATOS DE LAS UBICACIONES ---
+// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
 const locations = [
     {
         id: 1,
@@ -131,8 +128,8 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
-        // UPDATED BRIEF
-        brief: "History of the locality (3 parts).",
+        // CORREGIDO: Eliminado "(3 parts)" del texto
+        brief: "History of the locality.",
         mp3File: null,
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
@@ -213,8 +210,8 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-university",
-        // UPDATED BRIEF
-        brief: "Local history (2 parts).",
+        // CORREGIDO: Eliminado "(2 parts)" del texto
+        brief: "Local history.",
         mp3File: null,
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
@@ -248,7 +245,7 @@ const locations = [
 // --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
-let currentPlaylist = [];
+let currentPlaylist = []; // Array of objects {src, duration}
 let currentTrackIndex = 0;
 let isPlaylistMode = false;
 let currentLocIndex = -1;
@@ -282,7 +279,7 @@ window.onload = function() {
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
         const mp3Arg = loc.mp3File ? loc.mp3File : 'null';
-        // Safely pass playlist object
+        // Safely pass playlist object. Use single quotes inside JSON string carefully.
         const playlistArg = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
         const popupContent = `
