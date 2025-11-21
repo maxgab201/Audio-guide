@@ -128,9 +128,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
-        brief: "History of the locality.",
+        brief: "History of the locality (3 Parts).",
         mp3File: null,
-        // AUTOMATIC PLAYLIST
+        // PLAYLIST CON DURACIÓN ESTIMADA PARA BARRA UNIFICADA
         playlist: [
             "el pato 1 Staniscia.m4a",
             "el pato 2 Staniscia.m4a",
@@ -210,7 +210,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-university",
-        brief: "Local history.",
+        brief: "Local history (2 Parts).",
         mp3File: null,
         // AUTOMATIC PLAYLIST
         playlist: [
@@ -248,11 +248,7 @@ let audioPlayer;
 let currentPlaylist = [];
 let currentTrackIndex = 0;
 let isPlaylistMode = false;
-let currentLocIndex = -1;
 const markers = {}; 
-
-// Track durations cache (to simulate full duration for playlists)
-const playlistDurations = {}; 
 
 window.onload = function() {
     map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
@@ -292,19 +288,23 @@ window.onload = function() {
                 </div>
                 <div class="player-ui">
                     <div class="progress-container">
+                        <!-- Slider enabled for seeking -->
                         <input type="range" id="${uniqueSliderId}" class="progress-bar" value="0" min="0" max="100" disabled oninput="seekAudio(this.value)">
                     </div>
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
+                        <!-- PREVIOUS Location -->
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})">
                             <i class="fas fa-step-backward"></i>
                         </button>
                         
+                        <!-- Play/Pause -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
                             onclick="togglePlayer('${mp3Arg}', ${playlistArg}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
                         
+                        <!-- NEXT Location -->
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})">
                             <i class="fas fa-step-forward"></i>
                         </button>
@@ -318,10 +318,6 @@ window.onload = function() {
                  .bindPopup(popupContent);
         
         markers[index] = marker;
-
-        marker.on('click', function() {
-            currentLocIndex = index;
-        });
     });
 
     map.on('popupclose', function() {
@@ -332,24 +328,7 @@ window.onload = function() {
 
 // --- GLOBAL FUNCTIONS ---
 
-// Seek logic updated for playlists
-window.seekAudio = function(value) {
-    if (audioPlayer && audioPlayer.duration) {
-        // For simple single file
-        if (!isPlaylistMode) {
-            const seekTime = audioPlayer.duration * (value / 100);
-            audioPlayer.currentTime = seekTime;
-        } else {
-            // Playlist seek is tricky without pre-loading all durations.
-            // Simplified logic: Seek within current track only for this demo.
-            // Real continuous seeking requires more complex audio merging logic not fully supported in simple HTML/JS without backend.
-            // We will stick to per-track seeking for stability in this version.
-            const seekTime = audioPlayer.duration * (value / 100);
-            audioPlayer.currentTime = seekTime;
-        }
-    }
-};
-
+// Tour Mode Navigation
 window.goToLocation = function(newIndex) {
     if (newIndex < 0) newIndex = locations.length - 1;
     if (newIndex >= locations.length) newIndex = 0;
@@ -363,12 +342,48 @@ window.goToLocation = function(newIndex) {
         if (marker) {
             marker.openPopup();
             map.flyTo(locations[newIndex].coords, 14, { duration: 1.5 });
-            currentLocIndex = newIndex;
         }
     }, 200);
 };
 
-// Main Player Controller
+// Seek functionality (Supports gapless playlist seeking roughly)
+window.seekAudio = function(value) {
+    if (!audioPlayer || !audioPlayer.duration) return;
+
+    if (isPlaylistMode) {
+        // Advanced Logic: Determine which track corresponds to the % clicked
+        const totalTracks = currentPlaylist.length;
+        const trackShare = 100 / totalTracks; // % of bar per track
+        
+        // Find target track index based on value
+        let targetIndex = Math.floor(value / trackShare);
+        if (targetIndex >= totalTracks) targetIndex = totalTracks - 1;
+
+        // Calculate seek within that track
+        const relativeValue = value - (targetIndex * trackShare); // % within this segment
+        const relativePercent = relativeValue / trackShare; // 0.0 to 1.0
+
+        // If changing track, load it
+        if (targetIndex !== currentTrackIndex) {
+            currentTrackIndex = targetIndex;
+            audioPlayer.src = currentPlaylist[currentTrackIndex];
+            audioPlayer.play();
+        }
+        
+        // Seek when metadata loads (simplified for immediate effect if already loaded)
+        setTimeout(() => {
+             if(audioPlayer.duration) {
+                 audioPlayer.currentTime = audioPlayer.duration * relativePercent;
+             }
+        }, 50);
+
+    } else {
+        // Simple single file seek
+        const seekTime = audioPlayer.duration * (value / 100);
+        audioPlayer.currentTime = seekTime;
+    }
+};
+
 window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
@@ -385,14 +400,12 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     resetUI();
     btn.classList.add('active');
     btn.querySelector('i').className = 'fas fa-pause';
-    
     if(slider) slider.removeAttribute('disabled');
 
     if (playlist && playlist.length > 0) {
         isPlaylistMode = true;
         currentPlaylist = playlist;
         currentTrackIndex = 0;
-        // Start first track
         playTrack(currentPlaylist[0], slider, errorMsg, btn);
     } 
     else if (mp3File && mp3File !== 'null' && mp3File !== '') {
@@ -423,19 +436,21 @@ function playTrack(src, slider, errorMsg, btn) {
         });
     }
 
-    // Update Slider Logic
+    // Update Slider Logic (Gapless Visuals)
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
             
             if (isPlaylistMode) {
-                // SIMULATED CONTINUOUS BAR:
-                // We calculate progress based on (Current Track Index / Total Tracks) + (Track Progress / Total Tracks)
-                // This is an approximation to make it look like one single bar without pre-loading durations.
+                // Determine segment size based on track count (e.g. 33% each for 3 tracks)
                 const trackShare = 100 / currentPlaylist.length;
-                const trackProgress = (audioPlayer.currentTime / audioPlayer.duration) * trackShare;
-                const baseProgress = currentTrackIndex * trackShare;
-                percent = baseProgress + trackProgress;
+                
+                // Progress within current track (0-100 relative)
+                const currentTrackProgress = (audioPlayer.currentTime / audioPlayer.duration);
+                
+                // Convert to global bar percentage
+                // Base% (previous tracks) + (TrackShare * CurrentProgress)
+                percent = (currentTrackIndex * trackShare) + (currentTrackProgress * trackShare);
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
@@ -445,13 +460,12 @@ function playTrack(src, slider, errorMsg, btn) {
         }
     };
 
-    // Handle End of Track
     audioPlayer.onended = function() {
         if (isPlaylistMode) {
             currentTrackIndex++;
             if (currentTrackIndex < currentPlaylist.length) {
-                // PLAY NEXT TRACK IMMEDIATELY (Gapless-ish)
-                // Don't reset UI, just load next source
+                // PLAY NEXT IMMEDIATELY - No UI reset
+                // The bar will continue filling from where it left off
                 playTrack(currentPlaylist[currentTrackIndex], slider, errorMsg, btn);
             } else {
                 resetUI();
