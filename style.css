@@ -54,6 +54,24 @@ body, html {
     font-size: 1.2rem; 
 }
 
+/* --- CONTACT OVERLAY (NUEVO) --- */
+.contact-overlay {
+    position: absolute;
+    bottom: 5px;
+    left: 10px; /* Esquina inferior izquierda */
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    color: #444;
+    font-weight: 600;
+    pointer-events: auto;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 /* --- POPUP / TARJETA --- */
 .leaflet-popup-content-wrapper {
     border-radius: 16px; 
@@ -215,7 +233,6 @@ body, html {
 .play-pause-main:active { background: #333; transform: scale(0.95); }
 .play-pause-main.active { background: #FF5722; }
 
-/* Mensaje de Error Integrado */
 .audio-error-msg {
     display: none;
     color: #c62828;
