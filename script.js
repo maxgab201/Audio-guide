@@ -1,6 +1,5 @@
 // --- DATOS DE LAS UBICACIONES ---
 const locations = [
-    // --- LUGARES ORIGINALES ACTUALIZADOS ---
     {
         id: 1,
         name: "Estación Ranelagh",
@@ -10,17 +9,30 @@ const locations = [
         fallbackIcon: "fa-train",
         brief: "Estación de tren histórica de estilo inglés.",
         mp3File: "Cascante Ranelagh Railway Station.m4a",
-        audioText: ""
+        // Si es un array, es una lista de reproducción. Si es string, es un solo archivo.
+        playlist: null 
+    },
+    {
+        id: 22, // ID Nuevo para el Parque separado
+        name: "Parque de la Estación Ranelagh",
+        coords: [-34.7955, -58.1740], // Un poco desplazado de la estación
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Parque_Pereyra_Iraola_-_Arboleda.jpg/640px-Parque_Pereyra_Iraola_-_Arboleda.jpg", // Img genérica parque
+        categoryType: "nature",
+        fallbackIcon: "fa-tree",
+        brief: "Extenso parque que rodea la estación.",
+        mp3File: "Yacopini Ranelagh Park.m4a",
+        playlist: null
     },
     {
         id: 2,
         name: "Centro Ranelagh",
         coords: [-34.7935, -58.1720],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
-        categoryType: "nature",
+        categoryType: "city",
         fallbackIcon: "fa-tree",
         brief: "Centro residencial de ciudad jardín.",
-        audioText: "You are in Ranelagh Center. A peaceful garden city with many trees."
+        mp3File: null, // Sin audio asignado aún
+        playlist: null
     },
     {
         id: 3,
@@ -31,7 +43,7 @@ const locations = [
         fallbackIcon: "fa-golf-ball",
         brief: "Dedicado a Roberto De Vicenzo.",
         mp3File: "Ranelagh Golf Club Triviño.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 4,
@@ -42,7 +54,7 @@ const locations = [
         fallbackIcon: "fa-wine-glass-alt",
         brief: "Berazategui, Capital del Vidrio.",
         mp3File: "Museo del Vidrio Capaldo.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 5,
@@ -52,7 +64,8 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-landmark",
         brief: "Preservando el patrimonio local.",
-        audioText: "Regional Historical Museum. Protecting the memory of Berazategui."
+        mp3File: null, // Sin audio asignado aún (Esperando confirmación)
+        playlist: null
     },
     {
         id: 6,
@@ -62,7 +75,8 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-subway",
         brief: "Conexión principal de Hudson.",
-        audioText: "Hudson Station. Key transport link connected to the malt industry."
+        mp3File: null, // Sin audio asignado aún (Tienes HUDSON Audisio.m4a disponible)
+        playlist: null
     },
     {
         id: 7,
@@ -73,7 +87,7 @@ const locations = [
         fallbackIcon: "fa-train",
         brief: "Parada entre Berazategui y Hudson.",
         mp3File: "Plátanos Station-Corral.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 8,
@@ -84,7 +98,7 @@ const locations = [
         fallbackIcon: "fa-industry",
         brief: "Fábrica de vidrio icónica.",
         mp3File: "rigolleau.mp3", 
-        audioText: ""
+        playlist: null
     },
     {
         id: 9,
@@ -95,7 +109,7 @@ const locations = [
         fallbackIcon: "fa-drafting-compass",
         brief: "Estudio del arquitecto Bustillo.",
         mp3File: "Plátanos Cesar Bustillo and the world homo Fajre.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 10,
@@ -106,9 +120,8 @@ const locations = [
         fallbackIcon: "fa-swimmer",
         brief: "Complejo deportivo y natural.",
         mp3File: "Platanos Los privilegiados Papp.m4a",
-        audioText: ""
+        playlist: null
     },
-    // --- NUEVAS UBICACIONES ---
     {
         id: 11,
         name: "Club Ducilo",
@@ -118,7 +131,7 @@ const locations = [
         fallbackIcon: "fa-users",
         brief: "Club social y deportivo histórico.",
         mp3File: "Ducilo-D'Elia.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 12,
@@ -129,7 +142,7 @@ const locations = [
         fallbackIcon: "fa-building",
         brief: "Centro de actividades culturales.",
         mp3File: "Centro de actividades R. de Vicenzo Sama.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 13,
@@ -140,7 +153,7 @@ const locations = [
         fallbackIcon: "fa-city",
         brief: "Corazón administrativo y espacio verde.",
         mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 14,
@@ -151,7 +164,7 @@ const locations = [
         fallbackIcon: "fa-home",
         brief: "Historia de la familia Boyer.",
         mp3File: "Boyer.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 15,
@@ -160,9 +173,14 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
-        brief: "Historia de la localidad.",
-        mp3File: "el pato 1 Staniscia.m4a",
-        audioText: ""
+        brief: "Historia de la localidad (3 Partes).",
+        // SECUENCIA DE 3 PARTES
+        mp3File: null,
+        playlist: [
+            "el pato 1 Staniscia.m4a",
+            "el pato 2 Staniscia.m4a",
+            "el pato 3 Staniscia.m4a"
+        ]
     },
     {
         id: 16,
@@ -173,7 +191,7 @@ const locations = [
         fallbackIcon: "fa-church",
         brief: "Parroquia Ntra. Sra. de Luján.",
         mp3File: "Fiona Chen Parroquia Nuestra Señora de Luján.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 17,
@@ -184,7 +202,7 @@ const locations = [
         fallbackIcon: "fa-train",
         brief: "Estación Juan María Gutiérrez.",
         mp3File: "Gutierrez Station Square Fredes.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 18,
@@ -195,7 +213,7 @@ const locations = [
         fallbackIcon: "fa-road",
         brief: "Entrada a Gutiérrez / Alpargatas.",
         mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 19,
@@ -206,7 +224,7 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Historia local en la antigua estación.",
         mp3File: "Hudson Regional Museum Yudice.m4a",
-        audioText: ""
+        playlist: null
     },
     {
         id: 20,
@@ -217,20 +235,18 @@ const locations = [
         fallbackIcon: "fa-futbol",
         brief: "Cancha de la AD Berazategui.",
         mp3File: "Juarez T Berazategui football field.m4a",
-        audioText: ""
+        playlist: null
     },
-    // --- NUEVA UBICACIÓN (Tu Escuela) ---
     {
         id: 21,
         name: "Escuela Privada de Ranelagh",
-        // COORDENADAS ACTUALIZADAS: Av. Eva Peron 3842
-        coords: [-34.7982, -58.1768], 
+        coords: [-34.7982, -58.1768], // Av. Eva Peron 3842
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg", 
         categoryType: "city",
         fallbackIcon: "fa-graduation-cap",
         brief: "Escuela Privada de Ranelagh (EPR).",
         mp3File: "Rinaldi EPR.m4a",
-        audioText: ""
+        playlist: null
     }
 ];
 
@@ -241,13 +257,18 @@ window.onload = function() {
         attribution: '&copy; OpenStreetMap', maxZoom: 19, minZoom: 11
     }).addTo(map);
 
-    const synth = window.speechSynthesis;
     const audioPlayer = new Audio();
     let progressInterval = null;
+    
+    // Estado de Playlist
+    let currentPlaylist = [];
+    let currentTrackIndex = 0;
+    let isPlaylistMode = false;
 
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
-    window.togglePlayer = function(mp3File, text, btnId, sliderId, errorId) {
+    // Lógica principal de reproducción (Soporta MP3 simple y Playlist)
+    window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
         const btn = document.getElementById(btnId);
         const icon = btn.querySelector('i');
         const slider = document.getElementById(sliderId);
@@ -255,80 +276,85 @@ window.onload = function() {
 
         if(errorMsg) errorMsg.style.display = 'none';
 
-        const isMp3Playing = !audioPlayer.paused;
-        const isTtsPlaying = synth.speaking;
-
-        if (isMp3Playing || isTtsPlaying) {
+        // Si ya está sonando el mismo, pausar
+        if (!audioPlayer.paused && btn.classList.contains('active')) {
             audioPlayer.pause();
-            audioPlayer.currentTime = 0;
-            synth.cancel();
-            stopProgress(slider);
-            
-            if (btn.classList.contains('active')) {
-                resetUI();
-                return;
-            }
+            resetUI();
+            return;
         }
 
+        // Si es otro audio, resetear todo y empezar
         resetUI();
         btn.classList.add('active');
         icon.classList.remove('fa-play');
         icon.classList.add('fa-pause');
 
-        if (mp3File && mp3File !== 'undefined' && mp3File !== '') {
-            audioPlayer.src = mp3File;
-            
-            const playPromise = audioPlayer.play();
-
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.error("Error audio:", error);
-                    if(errorMsg) {
-                        errorMsg.style.display = 'block';
-                        errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Falta archivo: <b>${mp3File}</b>`;
-                    }
-                    resetUI();
-                });
-            }
-
-            audioPlayer.ontimeupdate = function() {
-                if (audioPlayer.duration) {
-                    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-                    slider.value = percent;
-                    updateSliderVisual(slider);
-                }
-            };
-            audioPlayer.onended = function() { resetUI(); };
+        // CASO A: LISTA DE REPRODUCCIÓN (Staniscia)
+        if (playlist && playlist.length > 0) {
+            isPlaylistMode = true;
+            currentPlaylist = playlist; // Es un array de strings ['pato1.m4a', 'pato2.m4a'...]
+            currentTrackIndex = 0;
+            playTrack(currentPlaylist[0], slider, errorMsg, btn);
         } 
+        // CASO B: ARCHIVO ÚNICO
+        else if (mp3File && mp3File !== 'null' && mp3File !== '') {
+            isPlaylistMode = false;
+            playTrack(mp3File, slider, errorMsg, btn);
+        } 
+        // CASO C: SIN AUDIO (Mostrar aviso)
         else {
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = 'en-US'; u.rate = 0.9;
-            const estimatedDuration = Math.max(text.length / 14, 2); 
-            u.onend = function() { resetUI(); };
-            startSimulatedProgress(slider, estimatedDuration);
-            synth.speak(u);
+            resetUI();
+            if(errorMsg) {
+                errorMsg.style.display = 'block';
+                errorMsg.innerHTML = `<i class="fas fa-info-circle"></i> Audio próximamente.`;
+            }
         }
     };
 
-    function startSimulatedProgress(slider, durationSec) {
-        if(progressInterval) clearInterval(progressInterval);
-        let currentSec = 0;
-        slider.value = 0;
-        progressInterval = setInterval(() => {
-            currentSec += 0.1;
-            const percent = (currentSec / durationSec) * 100;
-            if (percent >= 100) {
-                slider.value = 100;
-                clearInterval(progressInterval);
-            } else {
+    function playTrack(src, slider, errorMsg, btn) {
+        audioPlayer.src = src;
+        
+        const playPromise = audioPlayer.play();
+
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.error("Error audio:", error);
+                if(errorMsg) {
+                    errorMsg.style.display = 'block';
+                    errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se encuentra: <b>${src}</b>`;
+                }
+                resetUI();
+            });
+        }
+
+        // Actualizar barra
+        audioPlayer.ontimeupdate = function() {
+            if (audioPlayer.duration) {
+                const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
                 slider.value = percent;
+                updateSliderVisual(slider);
             }
-            updateSliderVisual(slider);
-        }, 100);
+        };
+
+        // Al terminar:
+        audioPlayer.onended = function() {
+            if (isPlaylistMode) {
+                // Si hay más tracks en la lista, reproducir el siguiente
+                currentTrackIndex++;
+                if (currentTrackIndex < currentPlaylist.length) {
+                    playTrack(currentPlaylist[currentTrackIndex], slider, errorMsg, btn);
+                } else {
+                    // Fin de la lista
+                    resetUI();
+                }
+            } else {
+                // Fin del audio único
+                resetUI();
+            }
+        };
     }
 
     function stopProgress(slider) {
-        if(progressInterval) clearInterval(progressInterval);
         if(slider) {
             slider.value = 0;
             updateSliderVisual(slider);
@@ -343,7 +369,6 @@ window.onload = function() {
     }
 
     function resetUI() {
-        if(progressInterval) clearInterval(progressInterval);
         audioPlayer.pause();
         document.querySelectorAll('.play-pause-main').forEach(b => {
             b.classList.remove('active');
@@ -356,7 +381,6 @@ window.onload = function() {
     }
 
     map.on('popupclose', function() {
-        synth.cancel();
         audioPlayer.pause();
         resetUI();
     });
@@ -371,7 +395,11 @@ window.onload = function() {
         const uniqueBtnId = `play-${loc.id}`;
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
-        const mp3Arg = loc.mp3File ? loc.mp3File : '';
+        const mp3Arg = loc.mp3File ? loc.mp3File : 'null';
+        
+        // Convertir playlist array a string JSON para pasar en el HTML (o null si no hay)
+        // Ojo con las comillas al pasar JSON en onclick
+        const playlistArg = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
         const popupContent = `
             <div class="popup-card">
@@ -393,8 +421,9 @@ window.onload = function() {
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
                         <button class="ctrl-btn"><i class="fas fa-step-backward"></i></button>
+                        <!-- Pasamos el array de playlist parseado -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${mp3Arg}', \`${loc.audioText.replace(/'/g, "\\'")}\`, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
+                            onclick="togglePlayer('${mp3Arg}', ${playlistArg}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
                         <button class="ctrl-btn"><i class="fas fa-step-forward"></i></button>
