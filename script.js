@@ -7,7 +7,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Estaci%C3%B3n_Ranelagh_2012.jpg/640px-Estaci%C3%B3n_Ranelagh_2012.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
-        brief: "Estación de tren histórica de estilo inglés.",
+        brief: "Historic British-style railway station.",
         mp3File: "Cascante Ranelagh Railway Station.m4a",
         playlist: null
     },
@@ -18,7 +18,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Parque_Pereyra_Iraola_-_Arboleda.jpg/640px-Parque_Pereyra_Iraola_-_Arboleda.jpg",
         categoryType: "nature",
         fallbackIcon: "fa-tree",
-        brief: "Extenso parque que rodea la estación.",
+        brief: "Extensive park surrounding the station.",
         mp3File: "Yacopini Ranelagh Park.m4a",
         playlist: null
     },
@@ -29,7 +29,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Roberto_De_Vicenzo_1967.jpg/400px-Roberto_De_Vicenzo_1967.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-golf-ball",
-        brief: "Dedicado a Roberto De Vicenzo.",
+        brief: "Dedicated to Roberto De Vicenzo.",
         mp3File: "Ranelagh Golf Club Triviño.m4a",
         playlist: null
     },
@@ -40,7 +40,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Glass_blowing_at_the_Corning_Museum_of_Glass.jpg/640px-Glass_blowing_at_the_Corning_Museum_of_Glass.jpg",
         categoryType: "industry",
         fallbackIcon: "fa-wine-glass-alt",
-        brief: "Berazategui, Capital del Vidrio.",
+        brief: "Berazategui, Capital of Glass.",
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
@@ -51,7 +51,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
-        brief: "Parada entre Berazategui y Hudson.",
+        brief: "Stop between Berazategui and Hudson.",
         mp3File: "Plátanos Station-Corral.m4a",
         playlist: null
     },
@@ -62,7 +62,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Antigua_Administraci%C3%B3n_de_la_Cristaler%C3%ADa_Rigolleau_SA.jpg/640px-Antigua_Administraci%C3%B3n_de_la_Cristaler%C3%ADa_Rigolleau_SA.jpg",
         categoryType: "industry",
         fallbackIcon: "fa-industry",
-        brief: "Fábrica de vidrio icónica.",
+        brief: "Iconic glass factory.",
         mp3File: "rigolleau.mp3", 
         playlist: null
     },
@@ -73,7 +73,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Alejandro_Bustillo.jpg/400px-Alejandro_Bustillo.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-drafting-compass",
-        brief: "Estudio del arquitecto Bustillo.",
+        brief: "Studio of architect Bustillo.",
         mp3File: "Plátanos Cesar Bustillo and the world homo Fajre.m4a",
         playlist: null
     },
@@ -84,7 +84,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Parque_Pereyra_Iraola_-_Arboleda.jpg/640px-Parque_Pereyra_Iraola_-_Arboleda.jpg",
         categoryType: "nature",
         fallbackIcon: "fa-swimmer",
-        brief: "Complejo deportivo y natural.",
+        brief: "Sports and nature complex.",
         mp3File: "Platanos Los privilegiados Papp.m4a",
         playlist: null
     },
@@ -95,7 +95,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Entrada_Club_Ducilo.jpg/640px-Entrada_Club_Ducilo.jpg",
         categoryType: "city",
         fallbackIcon: "fa-users",
-        brief: "Club social y deportivo histórico.",
+        brief: "Historic social and sports club.",
         mp3File: "Ducilo-D'Elia.m4a",
         playlist: null
     },
@@ -106,7 +106,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Centro_de_Actividades_Roberto_De_Vicenzo.jpg/640px-Centro_de_Actividades_Roberto_De_Vicenzo.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-building",
-        brief: "Centro de actividades culturales.",
+        brief: "Cultural activities center.",
         mp3File: "Centro de actividades R. de Vicenzo Sama.m4a",
         playlist: null
     },
@@ -117,7 +117,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Berazategui_-_Edificio_Inteligente.jpg/640px-Berazategui_-_Edificio_Inteligente.jpg",
         categoryType: "city",
         fallbackIcon: "fa-city",
-        brief: "Corazón administrativo y espacio verde.",
+        brief: "Administrative heart and green space.",
         mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
         playlist: null
     },
@@ -128,7 +128,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
-        brief: "Historia de la localidad (3 Partes).",
+        brief: "History of the locality (3 Parts).",
         mp3File: null,
         playlist: [
             "el pato 1 Staniscia.m4a",
@@ -143,7 +143,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Parroquia_Nuestra_Se%C3%B1ora_de_Luj%C3%A1n_%28Villa_Espa%C3%B1a%29.jpg/640px-Parroquia_Nuestra_Se%C3%B1ora_de_Luj%C3%A1n_%28Villa_Espa%C3%B1a%29.jpg", 
         categoryType: "museum",
         fallbackIcon: "fa-church",
-        brief: "Parroquia Ntra. Sra. de Luján.",
+        brief: "Parish of Our Lady of Luján.",
         mp3File: "Fiona Chen Parroquia Nuestra Señora de Luján.m4a",
         playlist: null
     },
@@ -154,7 +154,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
-        brief: "Estación Juan María Gutiérrez.",
+        brief: "Juan María Gutiérrez Station.",
         mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
         playlist: null
     },
@@ -165,8 +165,41 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
         categoryType: "city",
         fallbackIcon: "fa-tree",
-        brief: "Plaza aledaña a la estación.",
+        brief: "Square next to the station.",
         mp3File: "Gutierrez Station Square Fredes.m4a",
+        playlist: null
+    },
+    {
+        id: 24,
+        name: "Centro de Plátanos",
+        coords: [-34.7800, -58.1850], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg", 
+        categoryType: "city",
+        fallbackIcon: "fa-map-pin",
+        brief: "General location of Plátanos neighborhood.",
+        mp3File: "Plátanos Location Fajre.m4a",
+        playlist: null
+    },
+    {
+        id: 25,
+        name: "Plaza San Martín",
+        coords: [-34.7615, -58.2120], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-tree",
+        brief: "Main square of Berazategui.",
+        mp3File: "Garrido.m4a",
+        playlist: null
+    },
+    {
+        id: 26,
+        name: "Historia de Plátanos",
+        coords: [-34.7810, -58.1840], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-history",
+        brief: "History of the founder and the ants.",
+        mp3File: "Plátanos - Lucca.m4a",
         playlist: null
     },
     {
@@ -176,7 +209,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-university",
-        brief: "Historia local (2 Partes).",
+        brief: "Local history (2 Parts).",
         mp3File: null,
         playlist: [
             "Hudson Regional Museum Yudice.m4a",
@@ -190,53 +223,19 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Estadio_Norman_Lee.jpg/640px-Estadio_Norman_Lee.jpg",
         categoryType: "city",
         fallbackIcon: "fa-futbol",
-        brief: "Cancha de la AD Berazategui.",
+        brief: "Stadium of AD Berazategui.",
         mp3File: "Juarez T Berazategui football field.m4a",
         playlist: null
     },
     {
         id: 21,
         name: "Escuela Privada de Ranelagh",
-        // Av. Eva Perón 3842
         coords: [-34.7959, -58.1775], 
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg", 
         categoryType: "city",
         fallbackIcon: "fa-graduation-cap",
-        brief: "Escuela Privada de Ranelagh (EPR).",
+        brief: "Private School of Ranelagh (EPR).",
         mp3File: "Rinaldi EPR.m4a",
-        playlist: null
-    },
-    {
-        id: 24,
-        name: "Centro de Plátanos",
-        coords: [-34.7800, -58.1850], 
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg", 
-        categoryType: "city",
-        fallbackIcon: "fa-map-pin",
-        brief: "Ubicación general del barrio Plátanos.",
-        mp3File: "Plátanos Location Fajre.m4a",
-        playlist: null
-    },
-    {
-        id: 25,
-        name: "Plaza San Martín",
-        coords: [-34.7615, -58.2120], 
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
-        categoryType: "city",
-        fallbackIcon: "fa-tree",
-        brief: "Plaza principal de Berazategui.",
-        mp3File: "Garrido.m4a",
-        playlist: null
-    },
-    {
-        id: 26,
-        name: "Historia de Plátanos",
-        coords: [-34.7810, -58.1840], 
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
-        categoryType: "city",
-        fallbackIcon: "fa-history",
-        brief: "Historia del fundador y las hormigas.",
-        mp3File: "Plátanos - Lucca.m4a",
         playlist: null
     }
 ];
@@ -288,7 +287,8 @@ window.onload = function() {
                 </div>
                 <div class="player-ui">
                     <div class="progress-container">
-                        <input type="range" id="${uniqueSliderId}" class="progress-bar" value="0" min="0" max="100" disabled>
+                        <!-- Slider habilitado para buscar -->
+                        <input type="range" id="${uniqueSliderId}" class="progress-bar" value="0" min="0" max="100" disabled oninput="seekAudio(this.value)">
                     </div>
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
@@ -328,6 +328,13 @@ window.onload = function() {
 
 // --- FUNCIONES GLOBALES ---
 
+window.seekAudio = function(value) {
+    if (audioPlayer && audioPlayer.duration) {
+        const seekTime = audioPlayer.duration * (value / 100);
+        audioPlayer.currentTime = seekTime;
+    }
+};
+
 window.goToLocation = function(newIndex) {
     if (newIndex < 0) newIndex = locations.length - 1;
     if (newIndex >= locations.length) newIndex = 0;
@@ -364,6 +371,8 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     btn.classList.add('active');
     icon.classList.remove('fa-play');
     icon.classList.add('fa-pause');
+    // Habilitar slider al reproducir
+    if(slider) slider.removeAttribute('disabled');
 
     if (playlist && playlist.length > 0) {
         isPlaylistMode = true;
@@ -374,6 +383,13 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     else if (mp3File && mp3File !== 'null' && mp3File !== '') {
         isPlaylistMode = false;
         playTrack(mp3File, slider, errorMsg, btn);
+    } 
+    else {
+        resetUI();
+        if(errorMsg) {
+            errorMsg.style.display = 'block';
+            errorMsg.innerHTML = `<i class="fas fa-info-circle"></i> Audio coming soon.`;
+        }
     }
 };
 
@@ -386,7 +402,7 @@ function playTrack(src, slider, errorMsg, btn) {
             console.error("Error audio:", error);
             if(errorMsg) {
                 errorMsg.style.display = 'block';
-                errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Falta: <b>${src}</b>`;
+                errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Missing: <b>${src}</b>`;
             }
             resetUI();
         });
@@ -429,5 +445,6 @@ function resetUI() {
     document.querySelectorAll('.progress-bar').forEach(s => {
         s.value = 0;
         s.style.background = '#e0e0e0';
+        s.setAttribute('disabled', true); // Deshabilitar slider al parar
     });
 }
