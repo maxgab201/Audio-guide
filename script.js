@@ -1,5 +1,4 @@
 // --- VERIFICACIÓN DE CARGA ---
-// Si no ves esta alerta al abrir la web, es que el archivo está mal nombrado.
 // alert("El script se cargó correctamente. Si ves esto, el JS está conectado.");
 
 // --- DATOS DE LAS UBICACIONES ---
@@ -132,9 +131,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
-        brief: "History of the locality (3 Parts).",
+        // UPDATED BRIEF
+        brief: "History of the locality (3 parts).",
         mp3File: null,
-        // AUTOMATIC PLAYLIST WITH MANUAL DURATIONS (Seconds) for Smooth Bar
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -214,9 +213,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-university",
-        brief: "Local history (2 Parts).",
+        // UPDATED BRIEF
+        brief: "Local history (2 parts).",
         mp3File: null,
-        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -256,18 +255,22 @@ let currentLocIndex = -1;
 const markers = {}; 
 
 window.onload = function() {
-    // CAMBIO IMPORTANTE: Usar OpenStreetMap estándar (más confiable)
+    // Initialize map
     map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
 
-    // Capa de mapa Estándar (Evita problemas de carga gris)
+    // Clean map tiles
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    // Audio Player init
     audioPlayer = new Audio();
+    
+    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
+    // Render Markers
     locations.forEach((loc, index) => {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -297,19 +300,23 @@ window.onload = function() {
                 </div>
                 <div class="player-ui">
                     <div class="progress-container">
+                        <!-- Slider with oninput for seeking -->
                         <input type="range" id="${uniqueSliderId}" class="progress-bar" value="0" min="0" max="100" disabled oninput="seekAudio(this.value)">
                     </div>
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
+                        <!-- Previous Location -->
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})">
                             <i class="fas fa-step-backward"></i>
                         </button>
                         
+                        <!-- Play/Pause -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
                             onclick="togglePlayer('${mp3Arg}', ${playlistArg}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
                         
+                        <!-- Next Location -->
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})">
                             <i class="fas fa-step-forward"></i>
                         </button>
@@ -470,11 +477,9 @@ function playTrack(src, slider, errorMsg, btn) {
         let percent = 0;
         
         if (isPlaylistMode) {
-            // Unified Bar Logic
             const totalDuration = getPlaylistTotalDuration();
             const startTime = getCurrentTrackStartTime();
             const currentGlobalTime = startTime + audioPlayer.currentTime;
-            
             percent = (currentGlobalTime / totalDuration) * 100;
         } else {
             if (audioPlayer.duration) {
