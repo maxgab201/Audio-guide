@@ -1,5 +1,6 @@
-// --- 1. DATOS DE LAS UBICACIONES ---
+// --- DATOS DE LAS UBICACIONES ---
 const locations = [
+    // --- LUGARES ORIGINALES ACTUALIZADOS ---
     {
         id: 1,
         name: "Estación Ranelagh",
@@ -7,8 +8,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Estaci%C3%B3n_Ranelagh_2012.jpg/640px-Estaci%C3%B3n_Ranelagh_2012.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
-        brief: "Historic British railway station.",
-        audioText: "Welcome to Estación de Ranelagh. Famous for its English architecture and beautiful park."
+        brief: "Estación de tren histórica de estilo inglés.",
+        mp3File: "Cascante Ranelagh Railway Station.m4a",
+        audioText: ""
     },
     {
         id: 2,
@@ -17,7 +19,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
         categoryType: "nature",
         fallbackIcon: "fa-tree",
-        brief: "Charming garden-city center.",
+        brief: "Centro residencial de ciudad jardín.",
         audioText: "You are in Ranelagh Center. A peaceful garden city with many trees."
     },
     {
@@ -27,8 +29,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Roberto_De_Vicenzo_1967.jpg/400px-Roberto_De_Vicenzo_1967.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-golf-ball",
-        brief: "Dedicated to Roberto De Vicenzo.",
-        audioText: "The Golf Museum honors the legacy of legend Roberto De Vicenzo."
+        brief: "Dedicado a Roberto De Vicenzo.",
+        mp3File: "Ranelagh Golf Club Triviño.m4a",
+        audioText: ""
     },
     {
         id: 4,
@@ -37,8 +40,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Glass_blowing_at_the_Corning_Museum_of_Glass.jpg/640px-Glass_blowing_at_the_Corning_Museum_of_Glass.jpg",
         categoryType: "industry",
         fallbackIcon: "fa-wine-glass-alt",
-        brief: "Berazategui, Capital of Glass.",
-        audioText: "Museum of Glass. See artistic glass and learn about our industrial history."
+        brief: "Berazategui, Capital del Vidrio.",
+        mp3File: "Museo del Vidrio Capaldo.m4a",
+        audioText: ""
     },
     {
         id: 5,
@@ -47,7 +51,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-landmark",
-        brief: "Preserving local heritage.",
+        brief: "Preservando el patrimonio local.",
         audioText: "Regional Historical Museum. Protecting the memory of Berazategui."
     },
     {
@@ -57,7 +61,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-subway",
-        brief: "Main connection for Hudson.",
+        brief: "Conexión principal de Hudson.",
         audioText: "Hudson Station. Key transport link connected to the malt industry."
     },
     {
@@ -67,8 +71,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
-        brief: "Stop between Berazategui & Hudson.",
-        audioText: "Plátanos Station. Connecting the residential neighborhoods."
+        brief: "Parada entre Berazategui y Hudson.",
+        mp3File: "Plátanos Station-Corral.m4a",
+        audioText: ""
     },
     {
         id: 8,
@@ -77,8 +82,7 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Antigua_Administraci%C3%B3n_de_la_Cristaler%C3%ADa_Rigolleau_SA.jpg/640px-Antigua_Administraci%C3%B3n_de_la_Cristaler%C3%ADa_Rigolleau_SA.jpg",
         categoryType: "industry",
         fallbackIcon: "fa-industry",
-        brief: "Iconic glass factory.",
-        // NOMBRE SIMPLE PARA EL ARCHIVO MP3
+        brief: "Fábrica de vidrio icónica.",
         mp3File: "rigolleau.mp3", 
         audioText: ""
     },
@@ -89,8 +93,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Alejandro_Bustillo.jpg/400px-Alejandro_Bustillo.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-drafting-compass",
-        brief: "Architect Bustillo's studio.",
-        audioText: "Bustillo Workshop. Studio of one of Argentina's greatest architects."
+        brief: "Estudio del arquitecto Bustillo.",
+        mp3File: "Plátanos Cesar Bustillo and the world homo Fajre.m4a",
+        audioText: ""
     },
     {
         id: 10,
@@ -99,15 +104,138 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Parque_Pereyra_Iraola_-_Arboleda.jpg/640px-Parque_Pereyra_Iraola_-_Arboleda.jpg",
         categoryType: "nature",
         fallbackIcon: "fa-swimmer",
-        brief: "Sports and nature complex.",
-        audioText: "Los Privilegiados Complex. Sports, swimming, and nature activities."
+        brief: "Complejo deportivo y natural.",
+        mp3File: "Platanos Los privilegiados Papp.m4a",
+        audioText: ""
+    },
+    // --- NUEVAS UBICACIONES ---
+    {
+        id: 11,
+        name: "Club Ducilo",
+        coords: [-34.7768, -58.2367],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Entrada_Club_Ducilo.jpg/640px-Entrada_Club_Ducilo.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-users",
+        brief: "Club social y deportivo histórico.",
+        mp3File: "Ducilo-D'Elia.m4a",
+        audioText: ""
+    },
+    {
+        id: 12,
+        name: "Centro De Vicenzo",
+        coords: [-34.7623, -58.2105],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Centro_de_Actividades_Roberto_De_Vicenzo.jpg/640px-Centro_de_Actividades_Roberto_De_Vicenzo.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-building",
+        brief: "Centro de actividades culturales.",
+        mp3File: "Centro de actividades R. de Vicenzo Sama.m4a",
+        audioText: ""
+    },
+    {
+        id: 13,
+        name: "Centro Cívico / Parque",
+        coords: [-34.7608, -58.2133],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Berazategui_-_Edificio_Inteligente.jpg/640px-Berazategui_-_Edificio_Inteligente.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-city",
+        brief: "Corazón administrativo y espacio verde.",
+        mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
+        audioText: ""
+    },
+    {
+        id: 14,
+        name: "Familia Boyer",
+        coords: [-34.7930, -58.1750],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-home",
+        brief: "Historia de la familia Boyer.",
+        mp3File: "Boyer.m4a",
+        audioText: ""
+    },
+    {
+        id: 15,
+        name: "Localidad El Pato",
+        coords: [-34.8670, -58.1780],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-map-marker-alt",
+        brief: "Historia de la localidad.",
+        mp3File: "el pato 1 Staniscia.m4a",
+        audioText: ""
+    },
+    {
+        id: 16,
+        name: "Iglesia Villa España",
+        coords: [-34.7790, -58.2010], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Parroquia_Nuestra_Se%C3%B1ora_de_Luj%C3%A1n_%28Villa_Espa%C3%B1a%29.jpg/640px-Parroquia_Nuestra_Se%C3%B1ora_de_Luj%C3%A1n_%28Villa_Espa%C3%B1a%29.jpg", 
+        categoryType: "museum",
+        fallbackIcon: "fa-church",
+        brief: "Parroquia Ntra. Sra. de Luján.",
+        mp3File: "Fiona Chen Parroquia Nuestra Señora de Luján.m4a",
+        audioText: ""
+    },
+    {
+        id: 17,
+        name: "Estación Gutiérrez",
+        coords: [-34.8450, -58.1850],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
+        categoryType: "transport",
+        fallbackIcon: "fa-train",
+        brief: "Estación Juan María Gutiérrez.",
+        mp3File: "Gutierrez Station Square Fredes.m4a",
+        audioText: ""
+    },
+    {
+        id: 18,
+        name: "Rotonda Gutiérrez",
+        coords: [-34.8420, -58.1890],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Rotonda_Alpargatas.jpg/640px-Rotonda_Alpargatas.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-road",
+        brief: "Entrada a Gutiérrez / Alpargatas.",
+        mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
+        audioText: ""
+    },
+    {
+        id: 19,
+        name: "Museo Histórico Hudson",
+        coords: [-34.7945, -58.1490], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-university",
+        brief: "Historia local en la antigua estación.",
+        mp3File: "Hudson Regional Museum Yudice.m4a",
+        audioText: ""
+    },
+    {
+        id: 20,
+        name: "Estadio Norman Lee",
+        coords: [-34.7820, -58.2150],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Estadio_Norman_Lee.jpg/640px-Estadio_Norman_Lee.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-futbol",
+        brief: "Cancha de la AD Berazategui.",
+        mp3File: "Juarez T Berazategui football field.m4a",
+        audioText: ""
+    },
+    // --- NUEVA UBICACIÓN (Tu Escuela) ---
+    {
+        id: 21,
+        name: "Escuela Privada de Ranelagh",
+        // COORDENADAS ACTUALIZADAS: Av. Eva Peron 3842
+        coords: [-34.7982, -58.1768], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg", 
+        categoryType: "city",
+        fallbackIcon: "fa-graduation-cap",
+        brief: "Escuela Privada de Ranelagh (EPR).",
+        mp3File: "Rinaldi EPR.m4a",
+        audioText: ""
     }
 ];
 
-// --- 2. INICIALIZACIÓN ---
 window.onload = function() {
-    
-    const map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7850, -58.1800], 13);
+    const map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap', maxZoom: 19, minZoom: 11
@@ -117,20 +245,16 @@ window.onload = function() {
     const audioPlayer = new Audio();
     let progressInterval = null;
 
-    // Manejo de errores de imagen
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
-    // --- LÓGICA DE REPRODUCCIÓN (TTS + MP3) ---
     window.togglePlayer = function(mp3File, text, btnId, sliderId, errorId) {
         const btn = document.getElementById(btnId);
         const icon = btn.querySelector('i');
         const slider = document.getElementById(sliderId);
         const errorMsg = document.getElementById(errorId);
 
-        // Ocultar errores previos
         if(errorMsg) errorMsg.style.display = 'none';
 
-        // Si hay algo sonando (MP3 o Voz), pausar todo
         const isMp3Playing = !audioPlayer.paused;
         const isTtsPlaying = synth.speaking;
 
@@ -140,7 +264,6 @@ window.onload = function() {
             synth.cancel();
             stopProgress(slider);
             
-            // Si apreté el mismo botón, era solo para pausar. Terminamos.
             if (btn.classList.contains('active')) {
                 resetUI();
                 return;
@@ -152,7 +275,6 @@ window.onload = function() {
         icon.classList.remove('fa-play');
         icon.classList.add('fa-pause');
 
-        // CASO A: REPRODUCIR MP3
         if (mp3File && mp3File !== 'undefined' && mp3File !== '') {
             audioPlayer.src = mp3File;
             
@@ -160,11 +282,10 @@ window.onload = function() {
 
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.error("Error reproduciendo audio:", error);
-                    // Mostrar error visualmente
+                    console.error("Error audio:", error);
                     if(errorMsg) {
                         errorMsg.style.display = 'block';
-                        errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se pudo cargar: <b>${mp3File}</b>`;
+                        errorMsg.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Falta archivo: <b>${mp3File}</b>`;
                     }
                     resetUI();
                 });
@@ -179,7 +300,6 @@ window.onload = function() {
             };
             audioPlayer.onended = function() { resetUI(); };
         } 
-        // CASO B: REPRODUCIR VOZ ROBÓTICA (TTS)
         else {
             const u = new SpeechSynthesisUtterance(text);
             u.lang = 'en-US'; u.rate = 0.9;
@@ -284,8 +404,7 @@ window.onload = function() {
         `;
 
         L.marker(loc.coords, {icon: customIcon})
-         .addTo(map)
-         .bindPopup(popupContent);
+                 .addTo(map)
+                 .bindPopup(popupContent);
     });
 };
-
