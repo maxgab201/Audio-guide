@@ -1,6 +1,5 @@
 // --- DATOS DE LAS UBICACIONES ---
 const locations = [
-    // --- LUGARES ORIGINALES ACTUALIZADOS ---
     {
         id: 1,
         name: "Estación Ranelagh",
@@ -11,16 +10,6 @@ const locations = [
         brief: "Estación de tren histórica de estilo inglés.",
         mp3File: "Cascante Ranelagh Railway Station.m4a",
         audioText: ""
-    },
-    {
-        id: 2,
-        name: "Centro Ranelagh",
-        coords: [-34.7935, -58.1720],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
-        categoryType: "nature",
-        fallbackIcon: "fa-tree",
-        brief: "Centro residencial de ciudad jardín.",
-        audioText: "You are in Ranelagh Center. A peaceful garden city with many trees."
     },
     {
         id: 3,
@@ -43,26 +32,6 @@ const locations = [
         brief: "Berazategui, Capital del Vidrio.",
         mp3File: "Museo del Vidrio Capaldo.m4a",
         audioText: ""
-    },
-    {
-        id: 5,
-        name: "Museo Histórico",
-        coords: [-34.7705, -58.2055],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
-        categoryType: "museum",
-        fallbackIcon: "fa-landmark",
-        brief: "Preservando el patrimonio local.",
-        audioText: "Regional Historical Museum. Protecting the memory of Berazategui."
-    },
-    {
-        id: 6,
-        name: "Estación Hudson",
-        coords: [-34.7939, -58.1483],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
-        categoryType: "transport",
-        fallbackIcon: "fa-subway",
-        brief: "Conexión principal de Hudson.",
-        audioText: "Hudson Station. Key transport link connected to the malt industry."
     },
     {
         id: 7,
@@ -108,7 +77,6 @@ const locations = [
         mp3File: "Platanos Los privilegiados Papp.m4a",
         audioText: ""
     },
-    // --- NUEVAS UBICACIONES ---
     {
         id: 11,
         name: "Club Ducilo",
@@ -140,6 +108,17 @@ const locations = [
         fallbackIcon: "fa-city",
         brief: "Corazón administrativo y espacio verde.",
         mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
+        audioText: ""
+    },
+    {
+        id: 14,
+        name: "Familia Boyer",
+        coords: [-34.7930, -58.1750],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-home",
+        brief: "Historia de la familia Boyer.",
+        mp3File: "Boyer.m4a",
         audioText: ""
     },
     {
@@ -180,37 +159,18 @@ const locations = [
         audioText: ""
     },
     {
-        id: 23, 
-        name: "Plaza Estación Gutiérrez",
-        coords: [-34.8445, -58.1860], 
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
-        categoryType: "city",
-        fallbackIcon: "fa-tree",
-        brief: "Plaza aledaña a la estación.",
-        mp3File: "Gutierrez Station Square Fredes.m4a",
-        audioText: ""
-    },
-    {
-        id: 18,
-        name: "Rotonda Gutiérrez",
-        coords: [-34.8420, -58.1890],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Rotonda_Alpargatas.jpg/640px-Rotonda_Alpargatas.jpg",
-        categoryType: "city",
-        fallbackIcon: "fa-road",
-        brief: "Entrada a Gutiérrez / Alpargatas.",
-        mp3File: null,
-        playlist: null
-    },
-    {
         id: 19,
         name: "Museo Histórico Hudson",
         coords: [-34.7945, -58.1490], 
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-university",
-        brief: "Historia local en la antigua estación.",
-        mp3File: "Hudson Regional Museum Yudice.m4a",
-        playlist: null
+        brief: "Historia local (2 Partes).",
+        mp3File: null,
+        playlist: [
+            "Hudson Regional Museum Yudice.m4a",
+            "Hudson Regional Museum part 2 -Capparelli.m4a"
+        ]
     },
     {
         id: 20,
@@ -226,7 +186,7 @@ const locations = [
     {
         id: 21,
         name: "Escuela Privada de Ranelagh",
-        coords: [-34.7982, -58.1768], 
+        coords: [-34.7982, -58.1768], // Av. Eva Peron 3842
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg", 
         categoryType: "city",
         fallbackIcon: "fa-graduation-cap",
@@ -243,6 +203,50 @@ const locations = [
         fallbackIcon: "fa-tree",
         brief: "Extenso parque que rodea la estación.",
         mp3File: "Yacopini Ranelagh Park.m4a",
+        playlist: null
+    },
+    {
+        id: 23, 
+        name: "Plaza Estación Gutiérrez",
+        coords: [-34.8445, -58.1860], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-tree",
+        brief: "Plaza aledaña a la estación.",
+        mp3File: "Gutierrez Station Square Fredes.m4a",
+        audioText: ""
+    },
+    {
+        id: 24,
+        name: "Centro de Plátanos",
+        coords: [-34.7800, -58.1850], // Ubicación central
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg", 
+        categoryType: "city",
+        fallbackIcon: "fa-map-pin",
+        brief: "Ubicación general del barrio Plátanos.",
+        mp3File: "Plátanos Location Fajre.m4a",
+        playlist: null
+    },
+    {
+        id: 25,
+        name: "Plaza San Martín",
+        coords: [-34.7615, -58.2120], // Av Mitre y 7
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-tree",
+        brief: "Plaza principal de Berazategui.",
+        mp3File: "Garrido.m4a",
+        playlist: null
+    },
+    {
+        id: 26,
+        name: "Historia de Plátanos",
+        coords: [-34.7810, -58.1840], // Cerca de la estación
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-history",
+        brief: "Historia del fundador y las hormigas.",
+        mp3File: "Plátanos - Lucca.m4a",
         playlist: null
     }
 ];
