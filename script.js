@@ -143,18 +143,6 @@ const locations = [
         audioText: ""
     },
     {
-        id: 14,
-        name: "Familia Boyer",
-        coords: [-34.7930, -58.1750],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
-        categoryType: "museum",
-        fallbackIcon: "fa-home",
-        brief: "Historia de la familia Boyer.",
-        // CORRECCIÓN: 'Boyer.m4a' asignado aquí
-        mp3File: "Boyer.m4a",
-        audioText: ""
-    },
-    {
         id: 15,
         name: "Localidad El Pato",
         coords: [-34.8670, -58.1780],
@@ -188,14 +176,13 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Estación Juan María Gutiérrez.",
-        // CORRECCIÓN: Audio específico de la estación
         mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
         audioText: ""
     },
     {
-        id: 23, // ID NUEVO
+        id: 23, 
         name: "Plaza Estación Gutiérrez",
-        coords: [-34.8445, -58.1860], // Pegado a la estación
+        coords: [-34.8445, -58.1860], 
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
         categoryType: "city",
         fallbackIcon: "fa-tree",
@@ -211,7 +198,6 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-road",
         brief: "Entrada a Gutiérrez / Alpargatas.",
-        // SIN AUDIO por ahora
         mp3File: null,
         playlist: null
     },
@@ -240,7 +226,7 @@ const locations = [
     {
         id: 21,
         name: "Escuela Privada de Ranelagh",
-        coords: [-34.7982, -58.1768], // Av. Eva Peron 3842
+        coords: [-34.7982, -58.1768], 
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg", 
         categoryType: "city",
         fallbackIcon: "fa-graduation-cap",
