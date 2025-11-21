@@ -1,5 +1,6 @@
 // --- DATOS DE LAS UBICACIONES ---
 const locations = [
+    // --- LUGARES ORIGINALES ACTUALIZADOS ---
     {
         id: 1,
         name: "Estación Ranelagh",
@@ -9,30 +10,17 @@ const locations = [
         fallbackIcon: "fa-train",
         brief: "Estación de tren histórica de estilo inglés.",
         mp3File: "Cascante Ranelagh Railway Station.m4a",
-        // Si es un array, es una lista de reproducción. Si es string, es un solo archivo.
-        playlist: null 
-    },
-    {
-        id: 22, // ID Nuevo para el Parque separado
-        name: "Parque de la Estación Ranelagh",
-        coords: [-34.7955, -58.1740], // Un poco desplazado de la estación
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Parque_Pereyra_Iraola_-_Arboleda.jpg/640px-Parque_Pereyra_Iraola_-_Arboleda.jpg", // Img genérica parque
-        categoryType: "nature",
-        fallbackIcon: "fa-tree",
-        brief: "Extenso parque que rodea la estación.",
-        mp3File: "Yacopini Ranelagh Park.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 2,
         name: "Centro Ranelagh",
         coords: [-34.7935, -58.1720],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
-        categoryType: "city",
+        categoryType: "nature",
         fallbackIcon: "fa-tree",
         brief: "Centro residencial de ciudad jardín.",
-        mp3File: null, // Sin audio asignado aún
-        playlist: null
+        audioText: "You are in Ranelagh Center. A peaceful garden city with many trees."
     },
     {
         id: 3,
@@ -43,7 +31,7 @@ const locations = [
         fallbackIcon: "fa-golf-ball",
         brief: "Dedicado a Roberto De Vicenzo.",
         mp3File: "Ranelagh Golf Club Triviño.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 4,
@@ -54,7 +42,7 @@ const locations = [
         fallbackIcon: "fa-wine-glass-alt",
         brief: "Berazategui, Capital del Vidrio.",
         mp3File: "Museo del Vidrio Capaldo.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 5,
@@ -64,8 +52,7 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-landmark",
         brief: "Preservando el patrimonio local.",
-        mp3File: null, // Sin audio asignado aún (Esperando confirmación)
-        playlist: null
+        audioText: "Regional Historical Museum. Protecting the memory of Berazategui."
     },
     {
         id: 6,
@@ -75,8 +62,7 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-subway",
         brief: "Conexión principal de Hudson.",
-        mp3File: null, // Sin audio asignado aún (Tienes HUDSON Audisio.m4a disponible)
-        playlist: null
+        audioText: "Hudson Station. Key transport link connected to the malt industry."
     },
     {
         id: 7,
@@ -87,7 +73,7 @@ const locations = [
         fallbackIcon: "fa-train",
         brief: "Parada entre Berazategui y Hudson.",
         mp3File: "Plátanos Station-Corral.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 8,
@@ -98,7 +84,7 @@ const locations = [
         fallbackIcon: "fa-industry",
         brief: "Fábrica de vidrio icónica.",
         mp3File: "rigolleau.mp3", 
-        playlist: null
+        audioText: ""
     },
     {
         id: 9,
@@ -109,7 +95,7 @@ const locations = [
         fallbackIcon: "fa-drafting-compass",
         brief: "Estudio del arquitecto Bustillo.",
         mp3File: "Plátanos Cesar Bustillo and the world homo Fajre.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 10,
@@ -120,8 +106,9 @@ const locations = [
         fallbackIcon: "fa-swimmer",
         brief: "Complejo deportivo y natural.",
         mp3File: "Platanos Los privilegiados Papp.m4a",
-        playlist: null
+        audioText: ""
     },
+    // --- NUEVAS UBICACIONES ---
     {
         id: 11,
         name: "Club Ducilo",
@@ -131,7 +118,7 @@ const locations = [
         fallbackIcon: "fa-users",
         brief: "Club social y deportivo histórico.",
         mp3File: "Ducilo-D'Elia.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 12,
@@ -142,7 +129,7 @@ const locations = [
         fallbackIcon: "fa-building",
         brief: "Centro de actividades culturales.",
         mp3File: "Centro de actividades R. de Vicenzo Sama.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 13,
@@ -153,7 +140,7 @@ const locations = [
         fallbackIcon: "fa-city",
         brief: "Corazón administrativo y espacio verde.",
         mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 14,
@@ -163,8 +150,9 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-home",
         brief: "Historia de la familia Boyer.",
+        // CORRECCIÓN: 'Boyer.m4a' asignado aquí
         mp3File: "Boyer.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 15,
@@ -174,7 +162,6 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
         brief: "Historia de la localidad (3 Partes).",
-        // SECUENCIA DE 3 PARTES
         mp3File: null,
         playlist: [
             "el pato 1 Staniscia.m4a",
@@ -191,7 +178,7 @@ const locations = [
         fallbackIcon: "fa-church",
         brief: "Parroquia Ntra. Sra. de Luján.",
         mp3File: "Fiona Chen Parroquia Nuestra Señora de Luján.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 17,
@@ -201,8 +188,20 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Estación Juan María Gutiérrez.",
+        // CORRECCIÓN: Audio específico de la estación
+        mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
+        audioText: ""
+    },
+    {
+        id: 23, // ID NUEVO
+        name: "Plaza Estación Gutiérrez",
+        coords: [-34.8445, -58.1860], // Pegado a la estación
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Estaci%C3%B3n_Gutierrez.jpg/640px-Estaci%C3%B3n_Gutierrez.jpg",
+        categoryType: "city",
+        fallbackIcon: "fa-tree",
+        brief: "Plaza aledaña a la estación.",
         mp3File: "Gutierrez Station Square Fredes.m4a",
-        playlist: null
+        audioText: ""
     },
     {
         id: 18,
@@ -212,7 +211,8 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-road",
         brief: "Entrada a Gutiérrez / Alpargatas.",
-        mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
+        // SIN AUDIO por ahora
+        mp3File: null,
         playlist: null
     },
     {
@@ -247,6 +247,17 @@ const locations = [
         brief: "Escuela Privada de Ranelagh (EPR).",
         mp3File: "Rinaldi EPR.m4a",
         playlist: null
+    },
+    {
+        id: 22, 
+        name: "Parque de la Estación Ranelagh",
+        coords: [-34.7955, -58.1740], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Parque_Pereyra_Iraola_-_Arboleda.jpg/640px-Parque_Pereyra_Iraola_-_Arboleda.jpg",
+        categoryType: "nature",
+        fallbackIcon: "fa-tree",
+        brief: "Extenso parque que rodea la estación.",
+        mp3File: "Yacopini Ranelagh Park.m4a",
+        playlist: null
     }
 ];
 
@@ -260,14 +271,12 @@ window.onload = function() {
     const audioPlayer = new Audio();
     let progressInterval = null;
     
-    // Estado de Playlist
     let currentPlaylist = [];
     let currentTrackIndex = 0;
     let isPlaylistMode = false;
 
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
-    // Lógica principal de reproducción (Soporta MP3 simple y Playlist)
     window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
         const btn = document.getElementById(btnId);
         const icon = btn.querySelector('i');
@@ -276,32 +285,27 @@ window.onload = function() {
 
         if(errorMsg) errorMsg.style.display = 'none';
 
-        // Si ya está sonando el mismo, pausar
         if (!audioPlayer.paused && btn.classList.contains('active')) {
             audioPlayer.pause();
             resetUI();
             return;
         }
 
-        // Si es otro audio, resetear todo y empezar
         resetUI();
         btn.classList.add('active');
         icon.classList.remove('fa-play');
         icon.classList.add('fa-pause');
 
-        // CASO A: LISTA DE REPRODUCCIÓN (Staniscia)
         if (playlist && playlist.length > 0) {
             isPlaylistMode = true;
-            currentPlaylist = playlist; // Es un array de strings ['pato1.m4a', 'pato2.m4a'...]
+            currentPlaylist = playlist;
             currentTrackIndex = 0;
             playTrack(currentPlaylist[0], slider, errorMsg, btn);
         } 
-        // CASO B: ARCHIVO ÚNICO
         else if (mp3File && mp3File !== 'null' && mp3File !== '') {
             isPlaylistMode = false;
             playTrack(mp3File, slider, errorMsg, btn);
         } 
-        // CASO C: SIN AUDIO (Mostrar aviso)
         else {
             resetUI();
             if(errorMsg) {
@@ -327,7 +331,6 @@ window.onload = function() {
             });
         }
 
-        // Actualizar barra
         audioPlayer.ontimeupdate = function() {
             if (audioPlayer.duration) {
                 const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
@@ -336,19 +339,15 @@ window.onload = function() {
             }
         };
 
-        // Al terminar:
         audioPlayer.onended = function() {
             if (isPlaylistMode) {
-                // Si hay más tracks en la lista, reproducir el siguiente
                 currentTrackIndex++;
                 if (currentTrackIndex < currentPlaylist.length) {
                     playTrack(currentPlaylist[currentTrackIndex], slider, errorMsg, btn);
                 } else {
-                    // Fin de la lista
                     resetUI();
                 }
             } else {
-                // Fin del audio único
                 resetUI();
             }
         };
@@ -396,9 +395,6 @@ window.onload = function() {
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
         const mp3Arg = loc.mp3File ? loc.mp3File : 'null';
-        
-        // Convertir playlist array a string JSON para pasar en el HTML (o null si no hay)
-        // Ojo con las comillas al pasar JSON en onclick
         const playlistArg = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
         const popupContent = `
@@ -421,7 +417,6 @@ window.onload = function() {
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
                         <button class="ctrl-btn"><i class="fas fa-step-backward"></i></button>
-                        <!-- Pasamos el array de playlist parseado -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
                             onclick="togglePlayer('${mp3Arg}', ${playlistArg}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
