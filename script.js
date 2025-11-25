@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
+// --- DATA CONFIGURATION ---
 const locations = [
     {
         id: 1,
@@ -42,30 +42,6 @@ const locations = [
         fallbackIcon: "fa-wine-glass-alt",
         brief: "Berazategui, Capital of Glass.",
         mp3File: "Museo del Vidrio Capaldo.m4a",
-        playlist: null
-    },
-    {
-        id: 5,
-        name: "Museo Histórico",
-        coords: [-34.7705, -58.2055],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
-        categoryType: "museum",
-        fallbackIcon: "fa-landmark",
-        brief: "Preserving local heritage.",
-        // CORREGIDO: Asignado Sanchez aquí
-        mp3File: "Hudson Sanchez Moodie.m4a",
-        playlist: null
-    },
-    {
-        id: 6,
-        name: "Estación Hudson",
-        coords: [-34.7939, -58.1483],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
-        categoryType: "transport",
-        fallbackIcon: "fa-subway",
-        brief: "Key transport link.",
-        // CORREGIDO: Solo Audisio aquí
-        mp3File: "HUDSON Audisio.m4a",
         playlist: null
     },
     {
@@ -131,8 +107,13 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        mp3File: "Centro de actividades R. de Vicenzo Sama.m4a",
-        playlist: null
+        // ESTE ES EL ÚNICO CON VERSIONES MÚLTIPLES
+        versions: [
+            { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
+            { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
+        ],
+        // Archivo por defecto
+        mp3File: "Centro de actividades R. de Vicenzo Sama.m4a"
     },
     {
         id: 13,
@@ -291,12 +272,25 @@ window.onload = function() {
             iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -45]
         });
 
+        let selectorHTML = '';
+        let defaultFile = loc.mp3File;
+        let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
+
+        // GENERATE SELECTOR IF VERSIONS EXIST
+        if (loc.versions && loc.versions.length > 1) {
+            defaultFile = loc.versions[0].file;
+            selectorHTML = `<div class="version-selector">
+                <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
+                    ${loc.versions.map(v => `<option value="${v.file}">${v.name}</option>`).join('')}
+                </select>
+            </div>`;
+        }
+
         const uniqueBtnId = `play-${loc.id}`;
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
-        const mp3Arg = loc.mp3File ? loc.mp3File : 'null';
-        // Safely pass playlist object. Use single quotes inside JSON string carefully.
-        const playlistArg = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
+        // Use defaultFile which is now set correctly for versions or single file
+        const mp3Arg = defaultFile ? defaultFile : 'null';
 
         const popupContent = `
             <div class="popup-card">
@@ -310,6 +304,9 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
+                    
+                    <!-- Selector added here -->
+                    ${selectorHTML}
                 </div>
                 <div class="player-ui">
                     <div class="progress-container">
@@ -317,18 +314,12 @@ window.onload = function() {
                     </div>
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
-                        <button class="ctrl-btn" onclick="goToLocation(${index - 1})">
-                            <i class="fas fa-step-backward"></i>
-                        </button>
-                        
+                        <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${mp3Arg}', ${playlistArg}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
+                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
-                        
-                        <button class="ctrl-btn" onclick="goToLocation(${index + 1})">
-                            <i class="fas fa-step-forward"></i>
-                        </button>
+                        <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
                     </div>
                 </div>
             </div>
@@ -339,21 +330,31 @@ window.onload = function() {
                  .bindPopup(popupContent);
         
         markers[index] = marker;
-
-        marker.on('click', function() {
-            currentLocIndex = index;
-        });
+        marker.on('click', function() { currentLocIndex = index; });
     });
 
-    map.on('popupclose', function() {
-        audioPlayer.pause();
-        resetUI();
-    });
-    
+    map.on('popupclose', function() { audioPlayer.pause(); resetUI(); });
     setTimeout(function(){ map.invalidateSize();}, 500);
 };
 
-// --- GLOBAL FUNCTIONS ---
+// --- FUNCIONES ---
+
+// Function to handle version change
+window.changeVersion = function(newFile, btnId, sliderId, errorId) {
+    // Stop current playback
+    audioPlayer.pause();
+    resetUI();
+    
+    const btn = document.getElementById(btnId);
+    if (btn) {
+        // Update onclick attribute to play new file
+        btn.onclick = function() {
+            togglePlayer(newFile, null, btnId, sliderId, errorId);
+        };
+        // Auto start new version
+        togglePlayer(newFile, null, btnId, sliderId, errorId);
+    }
+};
 
 function getPlaylistTotalDuration() {
     return currentPlaylist.reduce((total, track) => total + track.estimatedDuration, 0);
@@ -373,7 +374,6 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
-
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -396,15 +396,12 @@ window.seekAudio = function(value) {
             audioPlayer.src = currentPlaylist[currentTrackIndex].src;
             audioPlayer.play().then(() => {
                 setTimeout(() => {
-                    if(audioPlayer.duration) {
-                        audioPlayer.currentTime = seekTimeWithinTrack;
-                    }
+                    if(audioPlayer.duration) audioPlayer.currentTime = seekTimeWithinTrack;
                 }, 100);
             });
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
-
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -414,6 +411,13 @@ window.seekAudio = function(value) {
 window.goToLocation = function(newIndex) {
     if (newIndex < 0) newIndex = locations.length - 1;
     if (newIndex >= locations.length) newIndex = 0;
+
+    let attempts = 0;
+    while (!markers[newIndex] && attempts < locations.length) {
+        newIndex++;
+        if (newIndex >= locations.length) newIndex = 0;
+        attempts++;
+    }
 
     map.closePopup();
     audioPlayer.pause();
@@ -484,7 +488,6 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
-            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -493,7 +496,6 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
-            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
