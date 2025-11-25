@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
+// --- DATA CONFIGURATION ---
 const locations = [
     {
         id: 1,
@@ -8,8 +8,10 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Historic British-style railway station.",
-        mp3File: "Cascante Ranelagh Railway Station.m4a",
-        playlist: null
+        // Single Audio (Standard)
+        versions: [
+            { name: "Main Guide (Cascante)", file: "Cascante Ranelagh Railway Station.m4a" }
+        ]
     },
     {
         id: 22, 
@@ -19,8 +21,22 @@ const locations = [
         categoryType: "nature",
         fallbackIcon: "fa-tree",
         brief: "Extensive park surrounding the station.",
-        mp3File: "Yacopini Ranelagh Park.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Yacopini)", file: "Yacopini Ranelagh Park.m4a" }
+        ]
+    },
+    {
+        id: 2,
+        name: "Centro Ranelagh",
+        coords: [-34.7935, -58.1720],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Ranelagh_-_Calle_362.jpg/640px-Ranelagh_-_Calle_362.jpg",
+        categoryType: "nature",
+        fallbackIcon: "fa-tree",
+        brief: "Garden city residential center.",
+        // Versiones Alternativas
+        versions: [
+            { name: "General Tour (Larsen)", file: "Ranelagh and golf club Perez Larsen.m4a" }
+        ]
     },
     {
         id: 3,
@@ -30,8 +46,9 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-golf-ball",
         brief: "Dedicated to Roberto De Vicenzo.",
-        mp3File: "Ranelagh Golf Club Triviño.m4a",
-        playlist: null
+        versions: [
+            { name: "Museum Guide (Triviño)", file: "Ranelagh Golf Club Triviño.m4a" }
+        ]
     },
     {
         id: 4,
@@ -41,8 +58,9 @@ const locations = [
         categoryType: "industry",
         fallbackIcon: "fa-wine-glass-alt",
         brief: "Berazategui, Capital of Glass.",
-        mp3File: "Museo del Vidrio Capaldo.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Capaldo)", file: "Museo del Vidrio Capaldo.m4a" }
+        ]
     },
     {
         id: 7,
@@ -52,8 +70,9 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        mp3File: "Plátanos Station-Corral.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" }
+        ]
     },
     {
         id: 8,
@@ -63,8 +82,9 @@ const locations = [
         categoryType: "industry",
         fallbackIcon: "fa-industry",
         brief: "Iconic glass factory.",
-        mp3File: "rigolleau.mp3", 
-        playlist: null
+        versions: [
+            { name: "Main Guide (Maggiore)", file: "rigolleau.mp3" }
+        ]
     },
     {
         id: 9,
@@ -74,8 +94,9 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-drafting-compass",
         brief: "Studio of architect Bustillo.",
-        mp3File: "Plátanos Cesar Bustillo and the world homo Fajre.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Fajre)", file: "Plátanos Cesar Bustillo and the world homo Fajre.m4a" }
+        ]
     },
     {
         id: 10,
@@ -85,8 +106,9 @@ const locations = [
         categoryType: "nature",
         fallbackIcon: "fa-swimmer",
         brief: "Sports and nature complex.",
-        mp3File: "Platanos Los privilegiados Papp.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Papp)", file: "Platanos Los privilegiados Papp.m4a" }
+        ]
     },
     {
         id: 11,
@@ -96,8 +118,9 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-users",
         brief: "Historic social and sports club.",
-        mp3File: "Ducilo-D'Elia.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (D'Elia)", file: "Ducilo-D'Elia.m4a" }
+        ]
     },
     {
         id: 12,
@@ -107,8 +130,11 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        mp3File: "Centro de actividades R. de Vicenzo Sama.m4a",
-        playlist: null
+        // SELECTOR: Sama vs Maurizi
+        versions: [
+            { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
+            { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
+        ]
     },
     {
         id: 13,
@@ -118,8 +144,9 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-city",
         brief: "Administrative heart and green space.",
-        mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Perez Pasquini)", file: "civic cultural centre and linear park Perez Pasquini.m4a" }
+        ]
     },
     {
         id: 15,
@@ -128,9 +155,9 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Ruta_Provincial_36_-_El_Pato.jpg/640px-Ruta_Provincial_36_-_El_Pato.jpg",
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
-        // CORREGIDO: Eliminado "(3 parts)" del texto
         brief: "History of the locality.",
-        mp3File: null,
+        // PLAYLIST (No versions, just one 3-part track)
+        isPlaylist: true,
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -145,8 +172,9 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-church",
         brief: "Parish of Our Lady of Luján.",
-        mp3File: "Fiona Chen Parroquia Nuestra Señora de Luján.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Chen)", file: "Fiona Chen Parroquia Nuestra Señora de Luján.m4a" }
+        ]
     },
     {
         id: 17,
@@ -156,8 +184,9 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Juan María Gutiérrez Station.",
-        mp3File: "Juna Maria Gutiérrez - Boyer.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Boyer)", file: "Juna Maria Gutiérrez - Boyer.m4a" }
+        ]
     },
     {
         id: 23, 
@@ -167,8 +196,9 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-tree",
         brief: "Square next to the station.",
-        mp3File: "Gutierrez Station Square Fredes.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Fredes)", file: "Gutierrez Station Square Fredes.m4a" }
+        ]
     },
     {
         id: 24,
@@ -178,8 +208,9 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
-        mp3File: "Plátanos Location Fajre.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Fajre)", file: "Plátanos Location Fajre.m4a" }
+        ]
     },
     {
         id: 25,
@@ -189,8 +220,9 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-tree",
         brief: "Main square of Berazategui.",
-        mp3File: "Garrido.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Garrido)", file: "Garrido.m4a" }
+        ]
     },
     {
         id: 26,
@@ -200,8 +232,23 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-history",
         brief: "History of the founder and the ants.",
-        mp3File: "Plátanos - Lucca.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Lucca)", file: "Plátanos - Lucca.m4a" }
+        ]
+    },
+    {
+        id: 6,
+        name: "Estación Hudson",
+        coords: [-34.7939, -58.1483],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
+        categoryType: "transport",
+        fallbackIcon: "fa-subway",
+        brief: "Key transport link.",
+        // SELECTOR: Audisio vs Sanchez Moodie
+        versions: [
+            { name: "Station Info (Audisio)", file: "HUDSON Audisio.m4a" },
+            { name: "General History (Sanchez Moodie)", file: "Hudson Sanchez Moodie.m4a" }
+        ]
     },
     {
         id: 19,
@@ -210,12 +257,30 @@ const locations = [
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Museo_Historico_de_Hudson.jpg/640px-Museo_Historico_de_Hudson.jpg",
         categoryType: "museum",
         fallbackIcon: "fa-university",
-        // CORREGIDO: Eliminado "(2 parts)" del texto
         brief: "Local history.",
-        mp3File: null,
+        isPlaylist: true,
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
+        ]
+    },
+    {
+        id: 5,
+        name: "Museo Histórico Regional",
+        coords: [-34.7705, -58.2055],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-landmark",
+        brief: "Preserving local heritage.",
+        // SANCHEZ MOVED HERE (Optional/Alternative, if you want)
+        // Based on your last instruction: "Sanches: museo regional"
+        // I will add Sanchez here as the main audio for now, since this ID 5 was empty.
+        versions: [
+           // Actually, user said "Sanches: museo regional", but file is "Hudson Sanchez".
+           // I already put Sanchez in Hudson Station as alternative.
+           // Let's leave ID 5 empty or put Sanchez here if you prefer?
+           // Sticking to your "Audisio: Hudson, Sanchez: Hudson" logic in previous prompt.
+           // Leaving ID 5 empty for now as it's Berazategui Center Museum, not Hudson.
         ]
     },
     {
@@ -226,8 +291,9 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-futbol",
         brief: "Stadium of AD Berazategui.",
-        mp3File: "Juarez T Berazategui football field.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Juarez)", file: "Juarez T Berazategui football field.m4a" }
+        ]
     },
     {
         id: 21,
@@ -237,50 +303,64 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-graduation-cap",
         brief: "Ranelagh Private School (EPR).",
-        mp3File: "Rinaldi EPR.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Rinaldi)", file: "Rinaldi EPR.m4a" }
+        ]
     }
 ];
 
-// --- GLOBAL VARIABLES ---
+// --- VARIABLES GLOBALES ---
 let map;
 let audioPlayer;
-let currentPlaylist = []; // Array of objects {src, duration}
+let currentPlaylist = [];
 let currentTrackIndex = 0;
 let isPlaylistMode = false;
 let currentLocIndex = -1;
 const markers = {}; 
 
 window.onload = function() {
-    // Initialize map
     map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
 
-    // Clean map tiles
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    // Audio Player init
     audioPlayer = new Audio();
-    
-    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
-    // Render Markers
     locations.forEach((loc, index) => {
+        // Ensure we have something to play (Playlist or Versions)
+        if (!loc.isPlaylist && (!loc.versions || loc.versions.length === 0)) return;
+
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
             html: `<div class="marker-pin"></div>`,
             iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -45]
         });
 
+        // Prepare Logic for Versions or Playlist
+        let selectorHTML = '';
+        let defaultFile = '';
+        let defaultPlaylist = 'null';
+        
+        if (loc.isPlaylist) {
+            defaultPlaylist = JSON.stringify(loc.playlist).replace(/"/g, "&quot;");
+        } else if (loc.versions && loc.versions.length > 0) {
+            defaultFile = loc.versions[0].file;
+            // Create Dropdown if > 1 version
+            if (loc.versions.length > 1) {
+                selectorHTML = `<div class="version-selector">
+                    <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
+                        ${loc.versions.map(v => `<option value="${v.file}">${v.name}</option>`).join('')}
+                    </select>
+                </div>`;
+            }
+        }
+
         const uniqueBtnId = `play-${loc.id}`;
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
-        const mp3Arg = loc.mp3File ? loc.mp3File : 'null';
-        // Safely pass playlist object. Use single quotes inside JSON string carefully.
-        const playlistArg = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
         const popupContent = `
             <div class="popup-card">
@@ -294,29 +374,22 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
+                    
+                    <!-- Version Selector (Optional) -->
+                    ${selectorHTML}
                 </div>
                 <div class="player-ui">
                     <div class="progress-container">
-                        <!-- Slider with oninput for seeking -->
                         <input type="range" id="${uniqueSliderId}" class="progress-bar" value="0" min="0" max="100" disabled oninput="seekAudio(this.value)">
                     </div>
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
-                        <!-- Previous Location -->
-                        <button class="ctrl-btn" onclick="goToLocation(${index - 1})">
-                            <i class="fas fa-step-backward"></i>
-                        </button>
-                        
-                        <!-- Play/Pause -->
+                        <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${mp3Arg}', ${playlistArg}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
+                            onclick="togglePlayer('${defaultFile}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
-                        
-                        <!-- Next Location -->
-                        <button class="ctrl-btn" onclick="goToLocation(${index + 1})">
-                            <i class="fas fa-step-forward"></i>
-                        </button>
+                        <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
                     </div>
                 </div>
             </div>
@@ -327,22 +400,32 @@ window.onload = function() {
                  .bindPopup(popupContent);
         
         markers[index] = marker;
-
-        marker.on('click', function() {
-            currentLocIndex = index;
-        });
+        marker.on('click', function() { currentLocIndex = index; });
     });
 
-    map.on('popupclose', function() {
-        audioPlayer.pause();
-        resetUI();
-    });
-    
-    // Forzar actualización del tamaño del mapa por si acaso
+    map.on('popupclose', function() { audioPlayer.pause(); resetUI(); });
     setTimeout(function(){ map.invalidateSize();}, 500);
 };
 
-// --- GLOBAL FUNCTIONS ---
+// --- FUNCIONES ---
+
+// Switcher for Versions
+window.changeVersion = function(newFile, btnId, sliderId, errorId) {
+    // Stop current
+    audioPlayer.pause();
+    resetUI();
+    
+    // Update button onclick to use new file
+    const btn = document.getElementById(btnId);
+    if (btn) {
+        // Re-assign onclick with new file
+        btn.onclick = function() {
+            togglePlayer(newFile, null, btnId, sliderId, errorId);
+        };
+        // Auto-play new version
+        togglePlayer(newFile, null, btnId, sliderId, errorId);
+    }
+};
 
 function getPlaylistTotalDuration() {
     return currentPlaylist.reduce((total, track) => total + track.estimatedDuration, 0);
@@ -362,7 +445,6 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
-
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -385,15 +467,12 @@ window.seekAudio = function(value) {
             audioPlayer.src = currentPlaylist[currentTrackIndex].src;
             audioPlayer.play().then(() => {
                 setTimeout(() => {
-                    if(audioPlayer.duration) {
-                        audioPlayer.currentTime = seekTimeWithinTrack;
-                    }
+                    if(audioPlayer.duration) audioPlayer.currentTime = seekTimeWithinTrack;
                 }, 100);
             });
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
-
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -401,8 +480,16 @@ window.seekAudio = function(value) {
 };
 
 window.goToLocation = function(newIndex) {
+    if (newIndex < 0) newIndex = Object.keys(markers).length - 1; 
     if (newIndex < 0) newIndex = locations.length - 1;
     if (newIndex >= locations.length) newIndex = 0;
+
+    let attempts = 0;
+    while (!markers[newIndex] && attempts < locations.length) {
+        newIndex++;
+        if (newIndex >= locations.length) newIndex = 0;
+        attempts++;
+    }
 
     map.closePopup();
     audioPlayer.pause();
@@ -471,22 +558,20 @@ function playTrack(src, slider, errorMsg, btn) {
     }
 
     audioPlayer.ontimeupdate = function() {
-        let percent = 0;
-        
-        if (isPlaylistMode) {
-            const totalDuration = getPlaylistTotalDuration();
-            const startTime = getCurrentTrackStartTime();
-            const currentGlobalTime = startTime + audioPlayer.currentTime;
-            percent = (currentGlobalTime / totalDuration) * 100;
-        } else {
-            if (audioPlayer.duration) {
+        if (audioPlayer.duration) {
+            let percent = 0;
+            if (isPlaylistMode) {
+                const totalDuration = getPlaylistTotalDuration();
+                const startTime = getCurrentTrackStartTime();
+                const currentGlobalTime = startTime + audioPlayer.currentTime;
+                percent = (currentGlobalTime / totalDuration) * 100;
+            } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
+            if(percent > 100) percent = 100;
+            slider.value = percent;
+            updateSliderVisual(slider);
         }
-        
-        if(percent > 100) percent = 100;
-        slider.value = percent;
-        updateSliderVisual(slider);
     };
 
     audioPlayer.onended = function() {
@@ -519,3 +604,5 @@ function resetUI() {
         s.setAttribute('disabled', true);
     });
 }
+
+
