@@ -1,6 +1,5 @@
-/* --- CONFIGURACIÓN BASE --- */
+/* --- BASE --- */
 * { 
-    /* Elimina el flash gris al tocar en móviles (iOS/Android) */
     -webkit-tap-highlight-color: transparent; 
     box-sizing: border-box; 
 }
@@ -10,29 +9,26 @@ body, html {
     width: 100%; 
     margin: 0; 
     padding: 0;
-    /* Fuente moderna y limpia */
     font-family: 'Inter', sans-serif;
     background-color: #e0e0e0; 
-    overflow: hidden; /* Evita scroll en la página entera */
+    overflow: hidden;
 }
 
-/* --- CONTENEDOR DEL MAPA --- */
 #map {
     position: absolute; 
     top: 0; bottom: 0; left: 0; right: 0;
     width: 100%; height: 100%; 
     z-index: 1;
-    background: #ddd; /* Color de fondo mientras carga */
+    background: #ddd;
 }
 
-/* --- ENCABEZADO FLOTANTE (HEADER) --- */
+/* --- HEADER --- */
 .header-overlay {
     position: absolute;
-    /* 'env' respeta el área segura (notch/cámara) del iPhone */
     top: calc(env(safe-area-inset-top) + 15px); 
     left: 50%; 
     transform: translateX(-50%);
-    z-index: 1000; /* Encima del mapa */
+    z-index: 1000;
     background: rgba(255, 255, 255, 0.95);
     padding: 12px 24px; 
     border-radius: 50px;
@@ -42,9 +38,8 @@ body, html {
     gap: 12px;
     width: max-content; 
     max-width: 90%;
-    pointer-events: none; /* Permite tocar el mapa a través del área transparente */
+    pointer-events: none;
 }
-/* Reactivar eventos de puntero solo para el contenido visible */
 .header-overlay > * { pointer-events: auto; }
 
 .header-overlay h1 { 
@@ -55,15 +50,15 @@ body, html {
 }
 
 .header-icon { 
-    color: #FF5722; /* Naranja característico */
+    color: #FF5722; 
     font-size: 1.2rem; 
 }
 
-/* --- INFORMACIÓN DE CONTACTO (NUEVO) --- */
+/* --- CONTACT OVERLAY --- */
 .contact-overlay {
     position: absolute;
     bottom: 5px;
-    left: 10px; /* Esquina inferior izquierda */
+    left: 10px;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.7);
     padding: 4px 8px;
@@ -71,25 +66,23 @@ body, html {
     font-size: 0.65rem;
     color: #444;
     font-weight: 600;
-    pointer-events: auto; /* Permite copiar el texto */
-    /* Efecto de vidrio esmerilado (Blur) */
+    pointer-events: auto;
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* --- ESTILOS DE POPUP (TARJETA DE INFORMACIÓN) --- */
+/* --- POPUP --- */
 .leaflet-popup-content-wrapper {
     border-radius: 16px; 
     padding: 0; 
-    overflow: visible; /* Permite sombras externas */
+    overflow: visible;
     box-shadow: 0 20px 50px rgba(0,0,0,0.4);
 }
 .leaflet-popup-content { 
     margin: 0 !important; 
-    width: 300px !important; /* Ancho fijo para consistencia */
+    width: 300px !important; 
 }
-/* Ocultar el botón de cierre (X) por defecto de Leaflet */
 .leaflet-popup-close-button { display: none !important; }
 
 .popup-card {
@@ -101,7 +94,6 @@ body, html {
     overflow: hidden;
 }
 
-/* --- CONTENEDOR MULTIMEDIA (IMAGEN/FALLBACK) --- */
 .media-container {
     width: 100%; 
     height: 160px;
@@ -116,14 +108,13 @@ body, html {
 .popup-img-element {
     width: 100%; 
     height: 100%; 
-    object-fit: cover; /* Recorta la imagen para llenar el espacio */
+    object-fit: cover;
     position: absolute; 
     top: 0; left: 0; 
     z-index: 2;
 }
 
-/* --- FALLBACKS VISUALES (PLAN B) --- */
-/* Se muestran si la imagen falla o no carga */
+/* Fallbacks */
 .fallback-visual {
     width: 100%; 
     height: 100%;
@@ -137,12 +128,11 @@ body, html {
     color: white;
     background: linear-gradient(135deg, #FF5722, #FF9800);
 }
-/* Colores específicos por categoría */
-.fallback-transport { background: linear-gradient(135deg, #2196F3, #00BCD4); } /* Azul */
-.fallback-nature { background: linear-gradient(135deg, #4CAF50, #8BC34A); }    /* Verde */
-.fallback-museum { background: linear-gradient(135deg, #9C27B0, #E91E63); }    /* Violeta/Rosa */
-.fallback-industry { background: linear-gradient(135deg, #607D8B, #9E9E9E); }  /* Gris */
-.fallback-city { background: linear-gradient(135deg, #FFC107, #FF9800); }      /* Ámbar */
+.fallback-transport { background: linear-gradient(135deg, #2196F3, #00BCD4); }
+.fallback-nature { background: linear-gradient(135deg, #4CAF50, #8BC34A); }
+.fallback-museum { background: linear-gradient(135deg, #9C27B0, #E91E63); }
+.fallback-industry { background: linear-gradient(135deg, #607D8B, #9E9E9E); }
+.fallback-city { background: linear-gradient(135deg, #FFC107, #FF9800); }
 
 .fallback-icon { 
     font-size: 3rem; 
@@ -157,7 +147,6 @@ body, html {
     letter-spacing: 1px;
 }
 
-/* --- DETALLES DE TEXTO --- */
 .popup-details { 
     padding: 16px 16px 10px 16px; 
     text-align: left; 
@@ -178,7 +167,29 @@ body, html {
     line-height: 1.4;
 }
 
-/* --- INTERFAZ DEL REPRODUCTOR --- */
+/* VERSION SELECTOR */
+.version-selector {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+}
+.version-select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    font-size: 0.8rem;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    outline: none;
+}
+.version-select:focus {
+    border-color: #FF5722;
+}
+
+/* --- PLAYER INTERFACE --- */
 .player-ui {
     background: #fff;
     padding: 0 16px 16px 16px;
@@ -194,7 +205,6 @@ body, html {
     gap: 10px;
 }
 
-/* Barra de Progreso Personalizada */
 .progress-bar {
     -webkit-appearance: none;
     width: 100%;
@@ -205,7 +215,6 @@ body, html {
     position: relative;
 }
 
-/* Estilo del "Thumb" (el círculo que se arrastra) */
 .progress-bar::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -218,7 +227,6 @@ body, html {
 }
 .progress-bar::-webkit-slider-thumb:active { transform: scale(1.3); }
 
-/* Fila de Controles (Atrás - Play - Siguiente) */
 .controls-row {
     display: flex;
     justify-content: center;
@@ -236,7 +244,6 @@ body, html {
 }
 .ctrl-btn:active { color: #FF5722; transform: scale(0.95); }
 
-/* Botón Principal Play/Pause */
 .play-pause-main {
     width: 48px; height: 48px;
     border-radius: 50%;
@@ -247,7 +254,6 @@ body, html {
 .play-pause-main:active { background: #333; transform: scale(0.95); }
 .play-pause-main.active { background: #FF5722; }
 
-/* Mensaje de Error Integrado (Rojo) */
 .audio-error-msg {
     display: none;
     color: #c62828;
@@ -260,7 +266,7 @@ body, html {
     border: 1px solid #e57373;
 }
 
-/* --- MARCADOR DEL MAPA (PIN) --- */
+/* Marker */
 .marker-pin {
     width: 40px; height: 40px; 
     border-radius: 50% 50% 50% 0;
@@ -272,7 +278,6 @@ body, html {
     box-shadow: 0 3px 8px rgba(0,0,0,0.3); 
     border: 3px solid white;
 }
-/* Círculo blanco interior del pin */
 .marker-pin::after {
     content: ''; 
     width: 12px; height: 12px; 
@@ -281,5 +286,6 @@ body, html {
     position: absolute; 
     border-radius: 50%;
 }
-/* Reseteo del icono div por defecto de Leaflet */
 .custom-div-icon { background: transparent; border: none; }
+
+
