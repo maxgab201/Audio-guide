@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION ---
+// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
 const locations = [
     {
         id: 1,
@@ -107,12 +107,12 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // ESTE ES EL ÚNICO CON VERSIONES MÚLTIPLES
+        // ÚNICO LUGAR CON VERSIONES ALTERNATIVAS
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
         ],
-        // Archivo por defecto
+        // Archivo por defecto para iniciar
         mp3File: "Centro de actividades R. de Vicenzo Sama.m4a"
     },
     {
@@ -135,6 +135,7 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
+        // AUTOMATIC PLAYLIST (Unified Bar)
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -216,6 +217,7 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
+        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -241,6 +243,29 @@ const locations = [
         fallbackIcon: "fa-graduation-cap",
         brief: "Ranelagh Private School (EPR).",
         mp3File: "Rinaldi EPR.m4a",
+        playlist: null
+    },
+    // SE AGREGA NUEVAMENTE ESTACIÓN HUDSON Y MUSEO HISTÓRICO REGIONAL CON AUDIOS ÚNICOS
+    {
+        id: 6,
+        name: "Estación Hudson",
+        coords: [-34.7939, -58.1483],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
+        categoryType: "transport",
+        fallbackIcon: "fa-subway",
+        brief: "Key transport link.",
+        mp3File: "HUDSON Audisio.m4a",
+        playlist: null
+    },
+    {
+        id: 5,
+        name: "Museo Histórico Regional",
+        coords: [-34.7705, -58.2055],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-landmark",
+        brief: "Preserving local heritage.",
+        mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     }
 ];
@@ -276,7 +301,7 @@ window.onload = function() {
         let defaultFile = loc.mp3File;
         let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
-        // GENERATE SELECTOR IF VERSIONS EXIST
+        // GENERATE SELECTOR ONLY IF VERSIONS EXIST (Only for De Vicenzo Center now)
         if (loc.versions && loc.versions.length > 1) {
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
@@ -289,7 +314,6 @@ window.onload = function() {
         const uniqueBtnId = `play-${loc.id}`;
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
-        // Use defaultFile which is now set correctly for versions or single file
         const mp3Arg = defaultFile ? defaultFile : 'null';
 
         const popupContent = `
@@ -305,7 +329,6 @@ window.onload = function() {
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
                     
-                    <!-- Selector added here -->
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -341,17 +364,14 @@ window.onload = function() {
 
 // Function to handle version change
 window.changeVersion = function(newFile, btnId, sliderId, errorId) {
-    // Stop current playback
     audioPlayer.pause();
     resetUI();
     
     const btn = document.getElementById(btnId);
     if (btn) {
-        // Update onclick attribute to play new file
         btn.onclick = function() {
             togglePlayer(newFile, null, btnId, sliderId, errorId);
         };
-        // Auto start new version
         togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
@@ -532,5 +552,3 @@ function resetUI() {
         s.setAttribute('disabled', true);
     });
 }
-
-
