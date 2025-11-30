@@ -47,13 +47,16 @@ const locations = [
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.7800, -58.1850], // Coordenadas restauradas
+        coords: [-34.7800, -58.1850],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        mp3File: "Plátanos Station-Corral.m4a",
-        playlist: null
+        // CORREGIDO: Versiones agregadas nuevamente
+        versions: [
+            { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
+            { name: "Station History (General)", file: "plátanos.m4a" }
+        ]
     },
     {
         id: 8,
@@ -107,13 +110,10 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // ÚNICO LUGAR CON VERSIONES ALTERNATIVAS
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
-        ],
-        // Archivo por defecto para iniciar
-        mp3File: "Centro de actividades R. de Vicenzo Sama.m4a"
+        ]
     },
     {
         id: 13,
@@ -135,7 +135,6 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST (Unified Bar)
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -217,7 +216,6 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -243,29 +241,6 @@ const locations = [
         fallbackIcon: "fa-graduation-cap",
         brief: "Ranelagh Private School (EPR).",
         mp3File: "Rinaldi EPR.m4a",
-        playlist: null
-    },
-    // SE AGREGA NUEVAMENTE ESTACIÓN HUDSON Y MUSEO HISTÓRICO REGIONAL CON AUDIOS ÚNICOS
-    {
-        id: 6,
-        name: "Estación Hudson",
-        coords: [-34.7939, -58.1483],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
-        categoryType: "transport",
-        fallbackIcon: "fa-subway",
-        brief: "Key transport link.",
-        mp3File: "HUDSON Audisio.m4a",
-        playlist: null
-    },
-    {
-        id: 5,
-        name: "Museo Histórico Regional",
-        coords: [-34.7705, -58.2055],
-        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
-        categoryType: "museum",
-        fallbackIcon: "fa-landmark",
-        brief: "Preserving local heritage.",
-        mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     }
 ];
@@ -301,7 +276,6 @@ window.onload = function() {
         let defaultFile = loc.mp3File;
         let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
-        // GENERATE SELECTOR ONLY IF VERSIONS EXIST (Only for De Vicenzo Center now)
         if (loc.versions && loc.versions.length > 1) {
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
@@ -328,7 +302,6 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
-                    
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -362,11 +335,9 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-// Function to handle version change
 window.changeVersion = function(newFile, btnId, sliderId, errorId) {
     audioPlayer.pause();
     resetUI();
-    
     const btn = document.getElementById(btnId);
     if (btn) {
         btn.onclick = function() {
@@ -394,7 +365,6 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
-
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -423,7 +393,6 @@ window.seekAudio = function(value) {
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
-
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -510,7 +479,6 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
-            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -519,7 +487,6 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
-            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
