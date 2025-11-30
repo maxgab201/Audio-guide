@@ -44,6 +44,7 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
+    // --- ESTACIÓN PLÁTANOS (CREADA DE NUEVO CON VERSIONES) ---
     {
         id: 7,
         name: "Estación Plátanos",
@@ -52,12 +53,15 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        // CORREGIDO: Versiones agregadas nuevamente
+        // SELECTOR DE VERSIONES
         versions: [
             { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
             { name: "Station History (General)", file: "plátanos.m4a" }
-        ]
+        ],
+        // Archivo por defecto
+        mp3File: "Plátanos Station-Corral.m4a"
     },
+    // -----------------------------------------------------------
     {
         id: 8,
         name: "Fábrica Rigolleau",
@@ -113,7 +117,8 @@ const locations = [
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
-        ]
+        ],
+        mp3File: "Centro de actividades R. de Vicenzo Sama.m4a"
     },
     {
         id: 13,
@@ -216,6 +221,7 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
+        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -242,10 +248,32 @@ const locations = [
         brief: "Ranelagh Private School (EPR).",
         mp3File: "Rinaldi EPR.m4a",
         playlist: null
+    },
+    {
+        id: 6,
+        name: "Estación Hudson",
+        coords: [-34.7939, -58.1483],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Estaci%C3%B3n_Hudson_2.jpg/640px-Estaci%C3%B3n_Hudson_2.jpg",
+        categoryType: "transport",
+        fallbackIcon: "fa-subway",
+        brief: "Key transport link.",
+        mp3File: "HUDSON Audisio.m4a",
+        playlist: null
+    },
+    {
+        id: 5,
+        name: "Museo Histórico Regional",
+        coords: [-34.7705, -58.2055],
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Municipalidad_de_Berazategui.jpg/640px-Municipalidad_de_Berazategui.jpg",
+        categoryType: "museum",
+        fallbackIcon: "fa-landmark",
+        brief: "Preserving local heritage.",
+        mp3File: "Hudson Sanchez Moodie.m4a",
+        playlist: null
     }
 ];
 
-// --- VARIABLES GLOBALES ---
+// --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
 let currentPlaylist = [];
@@ -276,6 +304,7 @@ window.onload = function() {
         let defaultFile = loc.mp3File;
         let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
+        // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
