@@ -47,7 +47,7 @@ const locations = [
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.7800, -58.1850],
+        coords: [-34.7800, -58.1850], // Coordenadas restauradas
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
@@ -394,6 +394,7 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
+
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -422,6 +423,7 @@ window.seekAudio = function(value) {
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
+
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -508,6 +510,7 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
+            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -516,6 +519,7 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
+            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
