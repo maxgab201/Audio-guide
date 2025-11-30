@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
+// --- DATA CONFIGURATION ---
 const locations = [
     {
         id: 1,
@@ -44,24 +44,24 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
-    // --- ESTACIÓN PLÁTANOS (CORREGIDA) ---
+    // --- ESTACIÓN PLÁTANOS (COORDENADAS CORREGIDAS) ---
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.7800, -58.1850], // Coordenadas aseguradas
+        // COORDENADAS EXACTAS QUE ME PASASTE:
+        coords: [-34.78233, -58.1708], 
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        // SELECTOR DE VERSIONES
+        // VERSIONES (Corral + Tu nuevo audio)
         versions: [
             { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
             { name: "Station History (General)", file: "plátanos.m4a" }
         ],
-        // Archivo por defecto
         mp3File: "Plátanos Station-Corral.m4a"
     },
-    // -------------------------------------
+    // --------------------------------------------------
     {
         id: 8,
         name: "Fábrica Rigolleau",
@@ -114,7 +114,6 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // Versiones Centro De Vicenzo
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -141,7 +140,6 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST (Unified Bar)
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -223,7 +221,6 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -289,7 +286,7 @@ window.onload = function() {
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; OpenStreetMap'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
     audioPlayer = new Audio();
@@ -306,7 +303,6 @@ window.onload = function() {
         let defaultFile = loc.mp3File;
         let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
-        // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
@@ -333,7 +329,6 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
-                    
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -425,7 +420,6 @@ window.seekAudio = function(value) {
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
-
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -512,7 +506,6 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
-            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -521,7 +514,6 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
-            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
