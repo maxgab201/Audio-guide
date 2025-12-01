@@ -183,7 +183,6 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
-        // SE AGREGA VERSIÓN DE CURCIO
         versions: [
             { name: "Location Info (Fajre)", file: "Plátanos Location Fajre.m4a" },
             { name: "The Town (Curcio)", file: "Platanos curcio 1.m4a" }
@@ -270,7 +269,6 @@ const locations = [
         mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     },
-    // --- NUEVAS ADICIONES ---
     {
         id: 27,
         name: "Costanera de Hudson",
@@ -298,29 +296,23 @@ const locations = [
 // --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
-let currentPlaylist = [];
+let currentPlaylist = []; // Array of objects {src, duration}
 let currentTrackIndex = 0;
 let isPlaylistMode = false;
 let currentLocIndex = -1;
 const markers = {}; 
 
 window.onload = function() {
-    // Initialize map
     map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
 
-    // Clean map tiles
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    // Audio Player init
     audioPlayer = new Audio();
-    
-    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
-    // Render Markers
     locations.forEach((loc, index) => {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -334,6 +326,7 @@ window.onload = function() {
 
         // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
+            // Ensure default file is the first in versions
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
                 <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
@@ -359,6 +352,7 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
+                    
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -393,14 +387,22 @@ window.onload = function() {
 // --- FUNCIONES ---
 
 window.changeVersion = function(newFile, btnId, sliderId, errorId) {
+    // Stop whatever is currently playing
     audioPlayer.pause();
     resetUI();
+    
+    // Get the button element
     const btn = document.getElementById(btnId);
+    
+    // Force update the button's onclick handler to play the new selected file
+    // We pass 'null' for playlist because versions are single files in this context
     if (btn) {
         btn.onclick = function() {
             togglePlayer(newFile, null, btnId, sliderId, errorId);
         };
-        togglePlayer(newFile, null, btnId, sliderId, errorId);
+        
+        // Optional: Auto-play the new selection immediately
+        // togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
 
@@ -422,6 +424,7 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
+
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -537,6 +540,7 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
+            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -545,6 +549,7 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
+            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
