@@ -52,11 +52,8 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        versions: [
-            { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
-            { name: "Station History (General)", file: "plátanos.m4a" }
-        ],
-        mp3File: "Plátanos Station-Corral.m4a"
+        mp3File: "Plátanos Station-Corral.m4a",
+        playlist: null
     },
     {
         id: 8,
@@ -110,6 +107,7 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
+        // SELECTOR DE VERSIONES
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -136,6 +134,7 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
+        // AUTOMATIC PLAYLIST (Unified Bar)
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -183,6 +182,7 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
+        // VERSIONES ALTERNATIVAS (Curcio y Fajre)
         versions: [
             { name: "Location Info (Fajre)", file: "Plátanos Location Fajre.m4a" },
             { name: "The Town (Curcio)", file: "Platanos curcio 1.m4a" }
@@ -220,6 +220,7 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
+        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -296,23 +297,29 @@ const locations = [
 // --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
-let currentPlaylist = []; // Array of objects {src, duration}
+let currentPlaylist = [];
 let currentTrackIndex = 0;
 let isPlaylistMode = false;
 let currentLocIndex = -1;
 const markers = {}; 
 
 window.onload = function() {
+    // Initialize map
     map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
 
+    // Clean map tiles
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
+    // Audio Player init
     audioPlayer = new Audio();
+    
+    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
+    // Render Markers
     locations.forEach((loc, index) => {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -326,7 +333,6 @@ window.onload = function() {
 
         // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
-            // Ensure default file is the first in versions
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
                 <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
@@ -352,7 +358,6 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
-                    
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -387,22 +392,14 @@ window.onload = function() {
 // --- FUNCIONES ---
 
 window.changeVersion = function(newFile, btnId, sliderId, errorId) {
-    // Stop whatever is currently playing
     audioPlayer.pause();
     resetUI();
-    
-    // Get the button element
     const btn = document.getElementById(btnId);
-    
-    // Force update the button's onclick handler to play the new selected file
-    // We pass 'null' for playlist because versions are single files in this context
     if (btn) {
         btn.onclick = function() {
             togglePlayer(newFile, null, btnId, sliderId, errorId);
         };
-        
-        // Optional: Auto-play the new selection immediately
-        // togglePlayer(newFile, null, btnId, sliderId, errorId);
+        togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
 
