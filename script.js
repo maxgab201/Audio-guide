@@ -47,13 +47,17 @@ const locations = [
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.7800, -58.1850],
+        coords: [-34.78233, -58.1708],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        mp3File: "Plátanos Station-Corral.m4a",
-        playlist: null
+        // VERSIONES
+        versions: [
+            { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
+            { name: "Station History (General)", file: "plátanos.m4a" }
+        ],
+        mp3File: "Plátanos Station-Corral.m4a"
     },
     {
         id: 8,
@@ -107,7 +111,7 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // SELECTOR DE VERSIONES
+        // VERSIONES
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -134,7 +138,6 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST (Unified Bar)
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -216,7 +219,6 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -287,10 +289,7 @@ window.onload = function() {
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-    // Audio Player init
     audioPlayer = new Audio();
-    
-    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
     // Render Markers
@@ -302,14 +301,13 @@ window.onload = function() {
         });
 
         let selectorHTML = '';
-        let defaultFile = loc.mp3File;
-        let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
+        // ID del selector que usaremos para leer el valor
+        const selectorId = `version-select-${loc.id}`;
 
         // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
-            defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
-                <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
+                <select id="${selectorId}" class="version-select" onchange="changeVersion('${selectorId}', '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
                     ${loc.versions.map(v => `<option value="${v.file}">${v.name}</option>`).join('')}
                 </select>
             </div>`;
@@ -318,7 +316,10 @@ window.onload = function() {
         const uniqueBtnId = `play-${loc.id}`;
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
-        const mp3Arg = defaultFile ? defaultFile : 'null';
+        
+        // Argumentos iniciales
+        const defaultFile = loc.mp3File ? loc.mp3File : 'null';
+        const defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
         const popupContent = `
             <div class="popup-card">
@@ -332,7 +333,6 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
-                    
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -342,8 +342,9 @@ window.onload = function() {
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
+                        <!-- Pasamos loc.id para que togglePlayer sepa dónde buscar el selector -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
+                            onclick="togglePlayer('${defaultFile}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}', ${loc.id})">
                             <i class="fas fa-play"></i>
                         </button>
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
@@ -366,15 +367,20 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-window.changeVersion = function(newFile, btnId, sliderId, errorId) {
-    audioPlayer.pause();
-    resetUI();
-    const btn = document.getElementById(btnId);
-    if (btn) {
-        btn.onclick = function() {
-            togglePlayer(newFile, null, btnId, sliderId, errorId);
-        };
-        togglePlayer(newFile, null, btnId, sliderId, errorId);
+// Se llama cuando cambia el dropdown. Forza la reproducción del nuevo archivo.
+window.changeVersion = function(selectorId, btnId, sliderId, errorId, locId) {
+    const selector = document.getElementById(selectorId);
+    if (selector) {
+        const newFile = selector.value;
+        // Paramos lo actual
+        if (!audioPlayer.paused) {
+            audioPlayer.pause();
+            resetUI();
+        }
+        // Iniciamos lo nuevo
+        // Pasamos 'null' como playlist porque las versiones son archivos sueltos
+        // Pasamos locId para mantener la consistencia
+        togglePlayer(newFile, null, btnId, sliderId, errorId, locId);
     }
 };
 
@@ -396,7 +402,6 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
-
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -425,7 +430,6 @@ window.seekAudio = function(value) {
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
-
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -457,19 +461,33 @@ window.goToLocation = function(newIndex) {
     }, 200);
 };
 
-window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
+// Función Principal de Reproducción
+// Se añadió el argumento locId para buscar el selector si existe
+window.togglePlayer = function(defaultFile, playlist, btnId, sliderId, errorId, locId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
     const errorMsg = document.getElementById(errorId);
+    
+    // 1. DETERMINAR QUÉ ARCHIVO REPRODUCIR
+    // Si existe un selector para este lugar, TIENE PRIORIDAD sobre el argumento defaultFile
+    let fileToPlay = defaultFile;
+    if (locId) {
+        const selector = document.getElementById(`version-select-${locId}`);
+        if (selector) {
+            fileToPlay = selector.value;
+        }
+    }
 
     if(errorMsg) errorMsg.style.display = 'none';
 
+    // Pausar si ya está sonando
     if (!audioPlayer.paused && btn.classList.contains('active')) {
         audioPlayer.pause();
         resetUI();
         return;
     }
 
+    // Iniciar
     resetUI();
     btn.classList.add('active');
     btn.querySelector('i').className = 'fas fa-pause';
@@ -481,9 +499,9 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
         currentTrackIndex = 0;
         playTrack(currentPlaylist[0].src, slider, errorMsg, btn);
     } 
-    else if (mp3File && mp3File !== 'null' && mp3File !== '') {
+    else if (fileToPlay && fileToPlay !== 'null' && fileToPlay !== '') {
         isPlaylistMode = false;
-        playTrack(mp3File, slider, errorMsg, btn);
+        playTrack(fileToPlay, slider, errorMsg, btn);
     } 
     else {
         resetUI();
@@ -495,6 +513,8 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
 };
 
 function playTrack(src, slider, errorMsg, btn) {
+    // Evitar recargar si es el mismo audio y solo estaba pausado
+    // (Mejora opcional, pero por ahora recargamos para asegurar el cambio de versión)
     audioPlayer.src = src;
     const playPromise = audioPlayer.play();
 
@@ -512,7 +532,6 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
-            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -521,7 +540,6 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
-            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
