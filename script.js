@@ -44,7 +44,6 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
-    // --- ESTACIÓN PLÁTANOS (AHORA CON VERSIONES) ---
     {
         id: 7,
         name: "Estación Plátanos",
@@ -53,15 +52,9 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        // SELECTOR DE VERSIONES
-        versions: [
-            { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
-            { name: "Station History (General)", file: "plátanos.m4a" }
-        ],
-        // Archivo por defecto
-        mp3File: "Plátanos Station-Corral.m4a"
+        mp3File: "Plátanos Station-Corral.m4a",
+        playlist: null
     },
-    // -----------------------------------------------
     {
         id: 8,
         name: "Fábrica Rigolleau",
@@ -275,7 +268,7 @@ const locations = [
     }
 ];
 
-// --- VARIABLES GLOBALES ---
+// --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
 let currentPlaylist = [];
@@ -285,16 +278,22 @@ let currentLocIndex = -1;
 const markers = {}; 
 
 window.onload = function() {
+    // Initialize map
     map = L.map('map', { zoomControl: false, tap: true }).setView([-34.7900, -58.2000], 12);
 
+    // Clean map tiles
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
+    // Audio Player init
     audioPlayer = new Audio();
+    
+    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
+    // Render Markers
     locations.forEach((loc, index) => {
         const customIcon = L.divIcon({
             className: 'custom-div-icon',
@@ -333,6 +332,7 @@ window.onload = function() {
                 <div class="popup-details">
                     <h3 class="popup-title">${loc.name}</h3>
                     <p class="popup-desc">${loc.brief}</p>
+                    
                     ${selectorHTML}
                 </div>
                 <div class="player-ui">
@@ -396,6 +396,7 @@ window.seekAudio = function(value) {
     if (isPlaylistMode) {
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
+
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
