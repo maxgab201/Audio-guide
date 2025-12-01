@@ -47,12 +47,11 @@ const locations = [
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.78233, -58.1708],
+        coords: [-34.7800, -58.1850],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        // VERSIONES
         versions: [
             { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
             { name: "Station History (General)", file: "plátanos.m4a" }
@@ -111,7 +110,6 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // VERSIONES
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -185,8 +183,12 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
-        mp3File: "Plátanos Location Fajre.m4a",
-        playlist: null
+        // SE AGREGA VERSIÓN DE CURCIO
+        versions: [
+            { name: "Location Info (Fajre)", file: "Plátanos Location Fajre.m4a" },
+            { name: "The Town (Curcio)", file: "Platanos curcio 1.m4a" }
+        ],
+        mp3File: "Plátanos Location Fajre.m4a"
     },
     {
         id: 25,
@@ -267,6 +269,29 @@ const locations = [
         brief: "Preserving local heritage.",
         mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
+    },
+    // --- NUEVAS ADICIONES ---
+    {
+        id: 27,
+        name: "Costanera de Hudson",
+        coords: [-34.7734, -58.1127], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Rio_de_la_Plata_desde_Hudson.jpg/640px-Rio_de_la_Plata_desde_Hudson.jpg", 
+        categoryType: "nature",
+        fallbackIcon: "fa-water",
+        brief: "Hudson Riverside and beach area.",
+        mp3File: "Dubluk- Hudson Riverside.m4a",
+        playlist: null
+    },
+    {
+        id: 28,
+        name: "Parque Pereyra Iraola",
+        coords: [-34.8433, -58.1366], 
+        img: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Parque_Pereyra_Iraola_-_Camino_Centenario.jpg/640px-Parque_Pereyra_Iraola_-_Camino_Centenario.jpg",
+        categoryType: "nature",
+        fallbackIcon: "fa-tree",
+        brief: "Provincial park and biosphere reserve.",
+        mp3File: "Bloise Parque ereyra Iraola.m4a",
+        playlist: null
     }
 ];
 
@@ -289,7 +314,10 @@ window.onload = function() {
         attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
+    // Audio Player init
     audioPlayer = new Audio();
+    
+    // Hide broken images
     window.handleImgError = function(img) { img.style.display = 'none'; };
 
     // Render Markers
@@ -301,13 +329,14 @@ window.onload = function() {
         });
 
         let selectorHTML = '';
-        // ID del selector que usaremos para leer el valor
-        const selectorId = `version-select-${loc.id}`;
+        let defaultFile = loc.mp3File;
+        let defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
 
         // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
+            defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
-                <select id="${selectorId}" class="version-select" onchange="changeVersion('${selectorId}', '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
+                <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
                     ${loc.versions.map(v => `<option value="${v.file}">${v.name}</option>`).join('')}
                 </select>
             </div>`;
@@ -316,10 +345,7 @@ window.onload = function() {
         const uniqueBtnId = `play-${loc.id}`;
         const uniqueSliderId = `slider-${loc.id}`;
         const uniqueErrorId = `error-${loc.id}`;
-        
-        // Argumentos iniciales
-        const defaultFile = loc.mp3File ? loc.mp3File : 'null';
-        const defaultPlaylist = loc.playlist ? JSON.stringify(loc.playlist).replace(/"/g, "&quot;") : 'null';
+        const mp3Arg = defaultFile ? defaultFile : 'null';
 
         const popupContent = `
             <div class="popup-card">
@@ -342,9 +368,8 @@ window.onload = function() {
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
-                        <!-- Pasamos loc.id para que togglePlayer sepa dónde buscar el selector -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${defaultFile}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}', ${loc.id})">
+                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
@@ -367,20 +392,15 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-// Se llama cuando cambia el dropdown. Forza la reproducción del nuevo archivo.
-window.changeVersion = function(selectorId, btnId, sliderId, errorId, locId) {
-    const selector = document.getElementById(selectorId);
-    if (selector) {
-        const newFile = selector.value;
-        // Paramos lo actual
-        if (!audioPlayer.paused) {
-            audioPlayer.pause();
-            resetUI();
-        }
-        // Iniciamos lo nuevo
-        // Pasamos 'null' como playlist porque las versiones son archivos sueltos
-        // Pasamos locId para mantener la consistencia
-        togglePlayer(newFile, null, btnId, sliderId, errorId, locId);
+window.changeVersion = function(newFile, btnId, sliderId, errorId) {
+    audioPlayer.pause();
+    resetUI();
+    const btn = document.getElementById(btnId);
+    if (btn) {
+        btn.onclick = function() {
+            togglePlayer(newFile, null, btnId, sliderId, errorId);
+        };
+        togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
 
@@ -430,6 +450,7 @@ window.seekAudio = function(value) {
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
+
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -461,33 +482,19 @@ window.goToLocation = function(newIndex) {
     }, 200);
 };
 
-// Función Principal de Reproducción
-// Se añadió el argumento locId para buscar el selector si existe
-window.togglePlayer = function(defaultFile, playlist, btnId, sliderId, errorId, locId) {
+window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
     const errorMsg = document.getElementById(errorId);
-    
-    // 1. DETERMINAR QUÉ ARCHIVO REPRODUCIR
-    // Si existe un selector para este lugar, TIENE PRIORIDAD sobre el argumento defaultFile
-    let fileToPlay = defaultFile;
-    if (locId) {
-        const selector = document.getElementById(`version-select-${locId}`);
-        if (selector) {
-            fileToPlay = selector.value;
-        }
-    }
 
     if(errorMsg) errorMsg.style.display = 'none';
 
-    // Pausar si ya está sonando
     if (!audioPlayer.paused && btn.classList.contains('active')) {
         audioPlayer.pause();
         resetUI();
         return;
     }
 
-    // Iniciar
     resetUI();
     btn.classList.add('active');
     btn.querySelector('i').className = 'fas fa-pause';
@@ -499,9 +506,9 @@ window.togglePlayer = function(defaultFile, playlist, btnId, sliderId, errorId, 
         currentTrackIndex = 0;
         playTrack(currentPlaylist[0].src, slider, errorMsg, btn);
     } 
-    else if (fileToPlay && fileToPlay !== 'null' && fileToPlay !== '') {
+    else if (mp3File && mp3File !== 'null' && mp3File !== '') {
         isPlaylistMode = false;
-        playTrack(fileToPlay, slider, errorMsg, btn);
+        playTrack(mp3File, slider, errorMsg, btn);
     } 
     else {
         resetUI();
@@ -513,8 +520,6 @@ window.togglePlayer = function(defaultFile, playlist, btnId, sliderId, errorId, 
 };
 
 function playTrack(src, slider, errorMsg, btn) {
-    // Evitar recargar si es el mismo audio y solo estaba pausado
-    // (Mejora opcional, pero por ahora recargamos para asegurar el cambio de versión)
     audioPlayer.src = src;
     const playPromise = audioPlayer.play();
 
