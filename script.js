@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
+// --- DATA CONFIGURATION ---
 const locations = [
     {
         id: 1,
@@ -44,7 +44,7 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
-    // --- ESTACIÓN PLÁTANOS (CON VERSIONES) ---
+    // --- ESTACIÓN PLÁTANOS (CON VERSIONES QUE FUNCIONAN) ---
     {
         id: 7,
         name: "Estación Plátanos",
@@ -53,15 +53,14 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        // SELECTOR DE VERSIONES
         versions: [
             { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
             { name: "Station History (General)", file: "plátanos.m4a" }
         ],
-        // Archivo por defecto
+        // Archivo inicial por defecto
         mp3File: "Plátanos Station-Corral.m4a"
     },
-    // -------------------------------------
+    // -------------------------------------------------------
     {
         id: 8,
         name: "Fábrica Rigolleau",
@@ -114,7 +113,7 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // SELECTOR DE VERSIONES
+        // VERSIONES QUE FUNCIONAN
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -141,7 +140,7 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST (Unified Bar)
+        // PLAYLIST UNIFICADA
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -181,6 +180,7 @@ const locations = [
         mp3File: "Gutierrez Station Square Fredes.m4a",
         playlist: null
     },
+    // --- CENTRO DE PLÁTANOS (CON VERSIONES NUEVAS: CURCIO) ---
     {
         id: 24,
         name: "Centro de Plátanos",
@@ -189,13 +189,13 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
-        // NUEVAS VERSIONES
         versions: [
             { name: "Location Info (Fajre)", file: "Plátanos Location Fajre.m4a" },
             { name: "The Town (Curcio)", file: "Platanos curcio 1.m4a" }
         ],
         mp3File: "Plátanos Location Fajre.m4a"
     },
+    // ---------------------------------------------------------
     {
         id: 25,
         name: "Plaza San Martín",
@@ -277,7 +277,7 @@ const locations = [
         mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     },
-    // --- NUEVAS ADICIONES ---
+    // --- NUEVOS LUGARES ---
     {
         id: 27,
         name: "Costanera de Hudson",
@@ -343,7 +343,7 @@ window.onload = function() {
         if (loc.versions && loc.versions.length > 1) {
             defaultFile = loc.versions[0].file;
             selectorHTML = `<div class="version-selector">
-                <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}')">
+                <select class="version-select" onchange="changeVersion(this.value, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
                     ${loc.versions.map(v => `<option value="${v.file}">${v.name}</option>`).join('')}
                 </select>
             </div>`;
@@ -376,7 +376,7 @@ window.onload = function() {
                     <div class="controls-row">
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}', '${loc.id}')">
+                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
@@ -399,22 +399,24 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-window.changeVersion = function(newFile, btnId, sliderId, errorId) {
-    // Stop playback
+// Función para cambiar la versión del audio dinámicamente
+window.changeVersion = function(newFile, btnId, sliderId, errorId, locId) {
+    // Detener reproducción actual
     audioPlayer.pause();
     resetUI();
     
+    // Obtener el botón
     const btn = document.getElementById(btnId);
+    
     if (btn) {
-        // Update the onClick event to play the NEW file
-        // We pass null for playlist because versions are single files here
-        // We pass null for locId because we've already resolved the file
+        // Actualizar el atributo onclick para que use el nuevo archivo seleccionado
+        // IMPORTANTE: Reemplazamos la función onclick por una nueva que usa la variable 'newFile' actual
         btn.onclick = function() {
-            togglePlayer(newFile, null, btnId, sliderId, errorId, null);
+            togglePlayer(newFile, null, btnId, sliderId, errorId);
         };
         
-        // Optionally auto-play the new version immediately for better UX
-        togglePlayer(newFile, null, btnId, sliderId, errorId, null);
+        // Opcional: Iniciar reproducción automáticamente al cambiar
+        togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
 
@@ -497,45 +499,35 @@ window.goToLocation = function(newIndex) {
     }, 200);
 };
 
-window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locId) {
+window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
     const errorMsg = document.getElementById(errorId);
 
     if(errorMsg) errorMsg.style.display = 'none';
 
-    // If playing this exact button, pause it
     if (!audioPlayer.paused && btn.classList.contains('active')) {
         audioPlayer.pause();
         resetUI();
         return;
     }
 
-    // Start fresh
     resetUI();
     btn.classList.add('active');
     btn.querySelector('i').className = 'fas fa-pause';
     if(slider) slider.removeAttribute('disabled');
 
-    // Determine source
-    // Priority: Playlist > Single File
-    // Note: If locId is provided (initial load), we rely on the default mp3File passed
-    // If changeVersion was called, the btn onclick is updated with the specific new file, so locId is null there.
-    
     if (playlist && playlist.length > 0) {
-        // PLAYLIST MODE
         isPlaylistMode = true;
         currentPlaylist = playlist;
         currentTrackIndex = 0;
         playTrack(currentPlaylist[0].src, slider, errorMsg, btn);
     } 
     else if (mp3File && mp3File !== 'null' && mp3File !== '') {
-        // SINGLE FILE MODE
         isPlaylistMode = false;
         playTrack(mp3File, slider, errorMsg, btn);
     } 
     else {
-        // NO AUDIO
         resetUI();
         if(errorMsg) {
             errorMsg.style.display = 'block';
