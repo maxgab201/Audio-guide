@@ -44,6 +44,7 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
+    // --- ESTACIÓN PLÁTANOS (INTACTA) ---
     {
         id: 7,
         name: "Estación Plátanos",
@@ -127,7 +128,7 @@ const locations = [
         mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
         playlist: null
     },
-    // --- LOCALIDAD EL PATO (ACTUALIZADO) ---
+    // --- LOCALIDAD EL PATO (ACTUALIZADA CON 4 VERSIONES) ---
     {
         id: 15,
         name: "Localidad El Pato",
@@ -136,7 +137,7 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
-        // AQUÍ ESTÁN LAS 4 VERSIONES QUE PEDISTE
+        // VERSIONES MÚLTIPLES (Playlist + Archivos Sueltos)
         versions: [
             { 
                 name: "History (Staniscia) - Playlist", 
@@ -150,7 +151,7 @@ const locations = [
             { name: "History (Oddone)", file: "Oddone El Pato.m4a" },
             { name: "History (Zanello)", file: "El pato Zanello.m4a" }
         ],
-        // Configuración inicial (Versión 1)
+        // Default: Primera versión (Staniscia Playlist)
         mp3File: null,
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
@@ -309,7 +310,7 @@ const locations = [
     }
 ];
 
-// --- VARIABLES GLOBALES ---
+// --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
 let currentPlaylist = [];
@@ -348,13 +349,14 @@ window.onload = function() {
 
         // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
-            // Pre-select first version
+            // Default to first version
             const first = loc.versions[0];
             defaultFile = first.file || null;
             defaultPlaylist = first.playlist ? JSON.stringify(first.playlist).replace(/"/g, "&quot;") : 'null';
 
+            // Use INDEX as value for robust selection
             selectorHTML = `<div class="version-selector">
-                <select class="version-select" onchange="changeVersion(this.selectedIndex, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
+                <select id="version-select-${loc.id}" class="version-select" onchange="changeVersion(this.selectedIndex, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
                     ${loc.versions.map((v, idx) => `<option value="${idx}">${v.name}</option>`).join('')}
                 </select>
             </div>`;
@@ -410,7 +412,7 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-// Función CORREGIDA: Usa índice para obtener datos seguros y reiniciar player
+// Función CRÍTICA para cambiar versión: Busca por índice y actualiza el player
 window.changeVersion = function(versionIndex, btnId, sliderId, errorId, locId) {
     audioPlayer.pause();
     resetUI();
@@ -422,16 +424,15 @@ window.changeVersion = function(versionIndex, btnId, sliderId, errorId, locId) {
 
     const selectedVersion = loc.versions[versionIndex];
     const newFile = selectedVersion.file || null;
-    // Handle Playlist in version if it exists
-    const newPlaylist = selectedVersion.playlist || null; 
+    const newPlaylist = selectedVersion.playlist || null;
 
     if (btn) {
-        // Update onClick to use the new file/playlist directly
+        // Actualizamos el onclick del botón Play para que apunte al nuevo archivo/playlist
         btn.onclick = function() {
             togglePlayer(newFile, newPlaylist, btnId, sliderId, errorId);
         };
         
-        // Auto-play
+        // Reproducir automáticamente al cambiar de versión
         togglePlayer(newFile, newPlaylist, btnId, sliderId, errorId);
     }
 };
@@ -483,7 +484,6 @@ window.seekAudio = function(value) {
         } else {
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
-
     } else {
         const seekTime = audioPlayer.duration * (value / 100);
         audioPlayer.currentTime = seekTime;
@@ -519,11 +519,26 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locI
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
     const errorMsg = document.getElementById(errorId);
-    
-    // SAFETY CHECK: If initial load (locId provided), default to first version if available
-    // This is just a safeguard. changeVersion handles dynamic updates.
+
+    // Safety check: If called from initial load with locId, double check dropdown state
+    // changeVersion handles dynamic changes, this is for safety on Play click without change
     let fileToPlay = mp3File;
     let playlistToPlay = playlist;
+
+    if (locId) {
+        const select = document.getElementById(`version-select-${locId}`);
+        if (select) {
+            // If selector exists, respect its value (index)
+            const loc = locations.find(l => l.id === locId);
+            if (loc && loc.versions) {
+                const selectedIdx = select.selectedIndex;
+                if (loc.versions[selectedIdx]) {
+                    fileToPlay = loc.versions[selectedIdx].file || null;
+                    playlistToPlay = loc.versions[selectedIdx].playlist || null;
+                }
+            }
+        }
+    }
 
     if(errorMsg) errorMsg.style.display = 'none';
 
@@ -558,6 +573,7 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locI
 };
 
 function playTrack(src, slider, errorMsg, btn) {
+    // Check if already loaded to avoid reload stutter, unless it's a new track
     if (audioPlayer.src.indexOf(encodeURI(src)) === -1) {
         audioPlayer.src = src;
     }
@@ -578,7 +594,6 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
-            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -587,7 +602,6 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
-            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
