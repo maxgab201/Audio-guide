@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
+// --- DATA CONFIGURATION ---
 const locations = [
     {
         id: 1,
@@ -44,10 +44,11 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
+    // --- ESTACIÓN PLÁTANOS (CON VERSIONES QUE FUNCIONAN) ---
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.78233, -58.1708], // Coordenadas verificadas
+        coords: [-34.7800, -58.1850],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
@@ -56,8 +57,10 @@ const locations = [
             { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
             { name: "Station History (General)", file: "plátanos.m4a" }
         ],
+        // Archivo inicial por defecto
         mp3File: "Plátanos Station-Corral.m4a"
     },
+    // -------------------------------------------------------
     {
         id: 8,
         name: "Fábrica Rigolleau",
@@ -110,6 +113,7 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
+        // VERSIONES QUE FUNCIONAN
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -136,6 +140,7 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
+        // PLAYLIST UNIFICADA
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -175,6 +180,7 @@ const locations = [
         mp3File: "Gutierrez Station Square Fredes.m4a",
         playlist: null
     },
+    // --- CENTRO DE PLÁTANOS (CON VERSIONES NUEVAS: CURCIO) ---
     {
         id: 24,
         name: "Centro de Plátanos",
@@ -183,13 +189,13 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
-        // VERSIONES (Fajre y Curcio)
         versions: [
             { name: "Location Info (Fajre)", file: "Plátanos Location Fajre.m4a" },
             { name: "The Town (Curcio)", file: "Platanos curcio 1.m4a" }
         ],
         mp3File: "Plátanos Location Fajre.m4a"
     },
+    // ---------------------------------------------------------
     {
         id: 25,
         name: "Plaza San Martín",
@@ -221,6 +227,7 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
+        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -270,7 +277,7 @@ const locations = [
         mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     },
-    // --- NUEVOS LUGARES AGREGADOS ---
+    // --- NUEVOS LUGARES ---
     {
         id: 27,
         name: "Costanera de Hudson",
@@ -369,7 +376,7 @@ window.onload = function() {
                     <div class="controls-row">
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
-                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}', ${loc.id})">
+                            onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
@@ -392,22 +399,24 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-// FIXED: Function to handle version change dynamically
+// Función para cambiar la versión del audio dinámicamente
 window.changeVersion = function(newFile, btnId, sliderId, errorId, locId) {
-    // Stop current playback
+    // Detener reproducción actual
     audioPlayer.pause();
     resetUI();
     
+    // Obtener el botón
     const btn = document.getElementById(btnId);
     
     if (btn) {
-        // Force update the onclick attribute to play the NEW file selected
+        // Actualizar el atributo onclick para que use el nuevo archivo seleccionado
+        // IMPORTANTE: Reemplazamos la función onclick por una nueva que usa la variable 'newFile' actual
         btn.onclick = function() {
-            togglePlayer(newFile, null, btnId, sliderId, errorId, locId);
+            togglePlayer(newFile, null, btnId, sliderId, errorId);
         };
         
-        // Auto-play the new selection immediately
-        togglePlayer(newFile, null, btnId, sliderId, errorId, locId);
+        // Opcional: Iniciar reproducción automáticamente al cambiar
+        togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
 
@@ -490,17 +499,10 @@ window.goToLocation = function(newIndex) {
     }, 200);
 };
 
-window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locId) {
+window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
     const errorMsg = document.getElementById(errorId);
-
-    // Double check if a selector exists for this location and prioritize its value
-    // This ensures that if the user clicks play without changing the dropdown, it still plays the correct version if logic was updated
-    let fileToPlay = mp3File;
-    if (locId) {
-         // We look for the selector in the DOM. Note: changeVersion handles the button update, so this is a fallback safety check.
-    }
 
     if(errorMsg) errorMsg.style.display = 'none';
 
@@ -521,9 +523,9 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locI
         currentTrackIndex = 0;
         playTrack(currentPlaylist[0].src, slider, errorMsg, btn);
     } 
-    else if (fileToPlay && fileToPlay !== 'null' && fileToPlay !== '') {
+    else if (mp3File && mp3File !== 'null' && mp3File !== '') {
         isPlaylistMode = false;
-        playTrack(fileToPlay, slider, errorMsg, btn);
+        playTrack(mp3File, slider, errorMsg, btn);
     } 
     else {
         resetUI();
@@ -535,11 +537,7 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locI
 };
 
 function playTrack(src, slider, errorMsg, btn) {
-    // Only change src if needed to avoid reloading
-    if (audioPlayer.src.indexOf(encodeURI(src)) === -1) {
-        audioPlayer.src = src;
-    }
-    
+    audioPlayer.src = src;
     const playPromise = audioPlayer.play();
 
     if (playPromise !== undefined) {
@@ -556,6 +554,7 @@ function playTrack(src, slider, errorMsg, btn) {
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
+            
             if (isPlaylistMode) {
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
@@ -564,6 +563,7 @@ function playTrack(src, slider, errorMsg, btn) {
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
+            
             if(percent > 100) percent = 100;
             slider.value = percent;
             updateSliderVisual(slider);
@@ -600,3 +600,5 @@ function resetUI() {
         s.setAttribute('disabled', true);
     });
 }
+
+
