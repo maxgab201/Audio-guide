@@ -1,4 +1,4 @@
-// --- DATA CONFIGURATION ---
+// --- DATA CONFIGURATION (English Descriptions, Spanish Names) ---
 const locations = [
     {
         id: 1,
@@ -44,23 +44,20 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
-    // --- ESTACIÓN PLÁTANOS (CORREGIDA Y CON VERSIONES) ---
     {
         id: 7,
         name: "Estación Plátanos",
-        coords: [-34.78233, -58.1708], // Coordenadas exactas
+        coords: [-34.78233, -58.1708],
         img: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Estaci%C3%B3n_Pl%C3%A1tanos.jpg/640px-Estaci%C3%B3n_Pl%C3%A1tanos.jpg",
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        // VERSIONES FUNCIONALES
         versions: [
             { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
             { name: "Station History (General)", file: "plátanos.m4a" }
         ],
         mp3File: "Plátanos Station-Corral.m4a"
     },
-    // ------------------------------------------------------
     {
         id: 8,
         name: "Fábrica Rigolleau",
@@ -130,6 +127,7 @@ const locations = [
         mp3File: "civic cultural centre and linear park Perez Pasquini.m4a",
         playlist: null
     },
+    // --- LOCALIDAD EL PATO (ACTUALIZADA CON 4 VERSIONES) ---
     {
         id: 15,
         name: "Localidad El Pato",
@@ -138,14 +136,27 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
+        versions: [
+            { 
+                name: "History (Staniscia) - Playlist", 
+                playlist: [
+                    { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
+                    { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
+                    { src: "el pato 3 Staniscia.m4a", estimatedDuration: 120 }
+                ] 
+            },
+            { name: "History (Vespoli)", file: "El Pato Vespoli.m4a" },
+            { name: "History (Oddone)", file: "Oddone El Pato.m4a" },
+            { name: "History (Zanello)", file: "El pato Zanello.m4a" }
+        ],
         mp3File: null,
-        // PLAYLIST COMPLETA
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
             { src: "el pato 3 Staniscia.m4a", estimatedDuration: 120 }
         ]
     },
+    // -------------------------------------------------------
     {
         id: 16,
         name: "Iglesia Villa España",
@@ -179,7 +190,6 @@ const locations = [
         mp3File: "Gutierrez Station Square Fredes.m4a",
         playlist: null
     },
-    // --- CENTRO DE PLÁTANOS (CON NUEVAS VERSIONES: CURCIO) ---
     {
         id: 24,
         name: "Centro de Plátanos",
@@ -274,7 +284,6 @@ const locations = [
         mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     },
-    // --- NUEVAS ADICIONES ---
     {
         id: 27,
         name: "Costanera de Hudson",
@@ -338,10 +347,14 @@ window.onload = function() {
 
         // GENERATE SELECTOR IF VERSIONS EXIST
         if (loc.versions && loc.versions.length > 1) {
-            defaultFile = loc.versions[0].file;
-            // FIXED: Pass loc.id so changeVersion knows WHICH select to read
+            defaultFile = loc.versions[0].file || null;
+            if(loc.versions[0].playlist) {
+                defaultPlaylist = JSON.stringify(loc.versions[0].playlist).replace(/"/g, "&quot;");
+                defaultFile = 'null';
+            }
+            
             selectorHTML = `<div class="version-selector">
-                <select id="version-select-${loc.id}" class="version-select" onchange="changeVersion('${`version-select-${loc.id}`}', '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
+                <select class="version-select" onchange="changeVersion(this.selectedIndex, '${`btn-${loc.id}`}', '${`slider-${loc.id}`}', '${`error-${loc.id}`}', ${loc.id})">
                     ${loc.versions.map(v => `<option value="${v.file}">${v.name}</option>`).join('')}
                 </select>
             </div>`;
@@ -373,12 +386,10 @@ window.onload = function() {
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
-                        
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
                             onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}', ${loc.id})">
                             <i class="fas fa-play"></i>
                         </button>
-                        
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
                     </div>
                 </div>
@@ -399,27 +410,29 @@ window.onload = function() {
 
 // --- FUNCIONES ---
 
-// FIXED: Change Version Function logic to force update
-window.changeVersion = function(selectId, btnId, sliderId, errorId, locId) {
-    // Stop current audio
+// Function to handle version change dynamically by INDEX
+window.changeVersion = function(versionIndex, btnId, sliderId, errorId, locId) {
     audioPlayer.pause();
     resetUI();
     
-    const select = document.getElementById(selectId);
     const btn = document.getElementById(btnId);
     
-    if (select && btn) {
-        const newFile = select.value; // Get selected file from dropdown
-        
-        // Update the button's onclick to play this new file
+    // Find the location and the selected version object
+    const loc = locations.find(l => l.id === locId);
+    if (!loc || !loc.versions || !loc.versions[versionIndex]) return;
+
+    const selectedVersion = loc.versions[versionIndex];
+    const newFile = selectedVersion.file || null;
+    const newPlaylist = selectedVersion.playlist || null;
+
+    if (btn) {
+        // Update the onclick to play this specific version
         btn.onclick = function() {
-            // We pass 'null' for playlist because versions are single files
-            // We pass 'null' for locId to avoid re-reading the selector (we already have the file)
-            togglePlayer(newFile, null, btnId, sliderId, errorId, null);
+            togglePlayer(newFile, newPlaylist, btnId, sliderId, errorId);
         };
         
         // Auto-play the new selection immediately
-        togglePlayer(newFile, null, btnId, sliderId, errorId, null);
+        togglePlayer(newFile, newPlaylist, btnId, sliderId, errorId);
     }
 };
 
@@ -502,22 +515,13 @@ window.goToLocation = function(newIndex) {
     }, 200);
 };
 
-// Main Player Controller with Version Support
 window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
     const errorMsg = document.getElementById(errorId);
 
-    // SAFETY CHECK: If this is the initial load (locId provided), check if there's a selector
-    // and use its value instead of the default mp3File. This ensures consistency if the user
-    // changed the dropdown but then closed/reopened the popup (though popup reset usually handles this).
-    let fileToPlay = mp3File;
-    if (locId) {
-        const select = document.getElementById(`version-select-${locId}`);
-        if (select) {
-            fileToPlay = select.value;
-        }
-    }
+    // SAFETY CHECK: If initial load (locId provided), we rely on the default passed args
+    // The changeVersion function handles updates dynamically.
 
     if(errorMsg) errorMsg.style.display = 'none';
 
@@ -538,9 +542,9 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locI
         currentTrackIndex = 0;
         playTrack(currentPlaylist[0].src, slider, errorMsg, btn);
     } 
-    else if (fileToPlay && fileToPlay !== 'null' && fileToPlay !== '') {
+    else if (mp3File && mp3File !== 'null' && mp3File !== '') {
         isPlaylistMode = false;
-        playTrack(fileToPlay, slider, errorMsg, btn);
+        playTrack(mp3File, slider, errorMsg, btn);
     } 
     else {
         resetUI();
@@ -552,7 +556,6 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId, locI
 };
 
 function playTrack(src, slider, errorMsg, btn) {
-    // Force reload to ensure correct file plays
     if (audioPlayer.src.indexOf(encodeURI(src)) === -1) {
         audioPlayer.src = src;
     }
@@ -621,4 +624,3 @@ function resetUI() {
 }
 
 
-4
