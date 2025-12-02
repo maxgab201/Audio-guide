@@ -44,6 +44,7 @@ const locations = [
         mp3File: "Museo del Vidrio Capaldo.m4a",
         playlist: null
     },
+    // ESTACIÓN PLÁTANOS CON AUDIO "plátanos.m4a" COMO OPCIÓN
     {
         id: 7,
         name: "Estación Plátanos",
@@ -52,8 +53,11 @@ const locations = [
         categoryType: "transport",
         fallbackIcon: "fa-train",
         brief: "Stop between Berazategui and Hudson.",
-        mp3File: "Plátanos Station-Corral.m4a",
-        playlist: null
+        versions: [
+            { name: "Main Guide (Corral)", file: "Plátanos Station-Corral.m4a" },
+            { name: "Station History (General)", file: "plátanos.m4a" }
+        ],
+        mp3File: "Plátanos Station-Corral.m4a"
     },
     {
         id: 8,
@@ -107,7 +111,6 @@ const locations = [
         categoryType: "museum",
         fallbackIcon: "fa-building",
         brief: "Cultural activities center.",
-        // SELECTOR DE VERSIONES
         versions: [
             { name: "Activity Center (Sama)", file: "Centro de actividades R. de Vicenzo Sama.m4a" },
             { name: "Bio De Vicenzo (Maurizi)", file: "Roberto De Vicenzo- Maurizi.m4a" }
@@ -134,7 +137,6 @@ const locations = [
         fallbackIcon: "fa-map-marker-alt",
         brief: "History of the locality.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST (Unified Bar)
         playlist: [
             { src: "el pato 1 Staniscia.m4a", estimatedDuration: 90 },
             { src: "el pato 2 Staniscia.m4a", estimatedDuration: 120 },
@@ -174,6 +176,7 @@ const locations = [
         mp3File: "Gutierrez Station Square Fredes.m4a",
         playlist: null
     },
+    // --- NUEVO: CENTRO DE PLÁTANOS (AHORA CON VERSIONES) ---
     {
         id: 24,
         name: "Centro de Plátanos",
@@ -182,7 +185,6 @@ const locations = [
         categoryType: "city",
         fallbackIcon: "fa-map-pin",
         brief: "General location of Plátanos neighborhood.",
-        // VERSIONES ALTERNATIVAS (Curcio y Fajre)
         versions: [
             { name: "Location Info (Fajre)", file: "Plátanos Location Fajre.m4a" },
             { name: "The Town (Curcio)", file: "Platanos curcio 1.m4a" }
@@ -220,7 +222,6 @@ const locations = [
         fallbackIcon: "fa-university",
         brief: "Local history.",
         mp3File: null,
-        // AUTOMATIC PLAYLIST
         playlist: [
             { src: "Hudson Regional Museum Yudice.m4a", estimatedDuration: 120 },
             { src: "Hudson Regional Museum part 2 -Capparelli.m4a", estimatedDuration: 120 }
@@ -270,6 +271,7 @@ const locations = [
         mp3File: "Hudson Sanchez Moodie.m4a",
         playlist: null
     },
+    // --- NUEVAS ADICIONES ---
     {
         id: 27,
         name: "Costanera de Hudson",
@@ -297,7 +299,7 @@ const locations = [
 // --- GLOBAL VARIABLES ---
 let map;
 let audioPlayer;
-let currentPlaylist = [];
+let currentPlaylist = []; // Array of objects {src, duration}
 let currentTrackIndex = 0;
 let isPlaylistMode = false;
 let currentLocIndex = -1;
@@ -362,15 +364,21 @@ window.onload = function() {
                 </div>
                 <div class="player-ui">
                     <div class="progress-container">
+                        <!-- Slider with oninput for seeking -->
                         <input type="range" id="${uniqueSliderId}" class="progress-bar" value="0" min="0" max="100" disabled oninput="seekAudio(this.value)">
                     </div>
                     <div id="${uniqueErrorId}" class="audio-error-msg"></div>
                     <div class="controls-row">
+                        <!-- Previous Location -->
                         <button class="ctrl-btn" onclick="goToLocation(${index - 1})"><i class="fas fa-step-backward"></i></button>
+                        
+                        <!-- Play/Pause -->
                         <button id="${uniqueBtnId}" class="ctrl-btn play-pause-main" 
                             onclick="togglePlayer('${mp3Arg}', ${defaultPlaylist}, '${uniqueBtnId}', '${uniqueSliderId}', '${uniqueErrorId}')">
                             <i class="fas fa-play"></i>
                         </button>
+                        
+                        <!-- Next Location -->
                         <button class="ctrl-btn" onclick="goToLocation(${index + 1})"><i class="fas fa-step-forward"></i></button>
                     </div>
                 </div>
@@ -386,19 +394,28 @@ window.onload = function() {
     });
 
     map.on('popupclose', function() { audioPlayer.pause(); resetUI(); });
+    // Forzar actualización del tamaño del mapa por si acaso
     setTimeout(function(){ map.invalidateSize();}, 500);
 };
 
 // --- FUNCIONES ---
 
+// Function to handle version change
 window.changeVersion = function(newFile, btnId, sliderId, errorId) {
+    // Stop current playback
     audioPlayer.pause();
     resetUI();
+    
     const btn = document.getElementById(btnId);
+    
     if (btn) {
+        // IMPORTANT: We must update the onclick attribute to play the new file
+        // We pass 'null' for playlist because versions are single files here
         btn.onclick = function() {
             togglePlayer(newFile, null, btnId, sliderId, errorId);
         };
+        
+        // Optional: Auto-play the new selection immediately for better UX
         togglePlayer(newFile, null, btnId, sliderId, errorId);
     }
 };
@@ -415,13 +432,16 @@ function getCurrentTrackStartTime() {
     return startTime;
 }
 
+// Main Seek Function
 window.seekAudio = function(value) {
     if (!audioPlayer || !audioPlayer.duration) return;
 
     if (isPlaylistMode) {
+        // Calculate global time requested based on total estimated duration
         const totalDuration = getPlaylistTotalDuration();
         const targetGlobalTime = totalDuration * (value / 100);
 
+        // Find which track contains this time
         let accumulatedTime = 0;
         let targetIndex = 0;
         let seekTimeWithinTrack = 0;
@@ -433,45 +453,51 @@ window.seekAudio = function(value) {
                 break;
             }
             accumulatedTime += currentPlaylist[i].estimatedDuration;
+            // If we reach end (100%), stay on last track
             if (i === currentPlaylist.length - 1) {
                 targetIndex = i;
                 seekTimeWithinTrack = currentPlaylist[i].estimatedDuration;
             }
         }
 
+        // If changing track is needed
         if (targetIndex !== currentTrackIndex) {
             currentTrackIndex = targetIndex;
             audioPlayer.src = currentPlaylist[currentTrackIndex].src;
             audioPlayer.play().then(() => {
+                // Small timeout to allow load before seeking
                 setTimeout(() => {
-                    if(audioPlayer.duration) audioPlayer.currentTime = seekTimeWithinTrack;
+                    if(audioPlayer.duration) {
+                        audioPlayer.currentTime = seekTimeWithinTrack;
+                    }
                 }, 100);
             });
         } else {
+            // Same track, just seek
             audioPlayer.currentTime = seekTimeWithinTrack;
         }
 
     } else {
-        const seekTime = audioPlayer.duration * (value / 100);
-        audioPlayer.currentTime = seekTime;
+        // Single File Mode
+        if (audioPlayer && audioPlayer.duration) {
+            const seekTime = audioPlayer.duration * (value / 100);
+            audioPlayer.currentTime = seekTime;
+        }
     }
 };
 
+// Navigation between Locations (Tour Mode)
 window.goToLocation = function(newIndex) {
+    // Loop navigation
     if (newIndex < 0) newIndex = locations.length - 1;
     if (newIndex >= locations.length) newIndex = 0;
 
-    let attempts = 0;
-    while (!markers[newIndex] && attempts < locations.length) {
-        newIndex++;
-        if (newIndex >= locations.length) newIndex = 0;
-        attempts++;
-    }
-
+    // Close current, stop audio
     map.closePopup();
     audioPlayer.pause();
     resetUI();
 
+    // Wait for close animation then fly to next
     setTimeout(() => {
         const marker = markers[newIndex];
         if (marker) {
@@ -482,6 +508,7 @@ window.goToLocation = function(newIndex) {
     }, 200);
 };
 
+// Main Player Controller
 window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
     const btn = document.getElementById(btnId);
     const slider = document.getElementById(sliderId);
@@ -489,28 +516,35 @@ window.togglePlayer = function(mp3File, playlist, btnId, sliderId, errorId) {
 
     if(errorMsg) errorMsg.style.display = 'none';
 
+    // If playing this exact button, pause it
     if (!audioPlayer.paused && btn.classList.contains('active')) {
         audioPlayer.pause();
         resetUI();
         return;
     }
 
+    // Start fresh
     resetUI();
     btn.classList.add('active');
     btn.querySelector('i').className = 'fas fa-pause';
+    
+    // Enable slider
     if(slider) slider.removeAttribute('disabled');
 
     if (playlist && playlist.length > 0) {
+        // PLAYLIST MODE
         isPlaylistMode = true;
         currentPlaylist = playlist;
         currentTrackIndex = 0;
         playTrack(currentPlaylist[0].src, slider, errorMsg, btn);
     } 
     else if (mp3File && mp3File !== 'null' && mp3File !== '') {
+        // SINGLE FILE MODE
         isPlaylistMode = false;
         playTrack(mp3File, slider, errorMsg, btn);
     } 
     else {
+        // NO AUDIO
         resetUI();
         if(errorMsg) {
             errorMsg.style.display = 'block';
@@ -534,34 +568,44 @@ function playTrack(src, slider, errorMsg, btn) {
         });
     }
 
+    // Update Slider Logic (Unified Bar for Playlists)
     audioPlayer.ontimeupdate = function() {
         if (audioPlayer.duration) {
             let percent = 0;
             
             if (isPlaylistMode) {
+                // Determine segment size based on track count (e.g. 33% each for 3 tracks)
+                // This logic assumes each track has an estimated duration provided in the config
                 const totalDuration = getPlaylistTotalDuration();
                 const startTime = getCurrentTrackStartTime();
                 const currentGlobalTime = startTime + audioPlayer.currentTime;
+                
                 percent = (currentGlobalTime / totalDuration) * 100;
             } else {
                 percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
             }
             
             if(percent > 100) percent = 100;
+            
             slider.value = percent;
             updateSliderVisual(slider);
         }
     };
 
+    // Handle End of Track
     audioPlayer.onended = function() {
         if (isPlaylistMode) {
             currentTrackIndex++;
             if (currentTrackIndex < currentPlaylist.length) {
+                // PLAY NEXT TRACK IMMEDIATELY
+                // Don't reset UI (keep bar visual context)
                 playTrack(currentPlaylist[currentTrackIndex].src, slider, errorMsg, btn);
             } else {
+                // END OF PLAYLIST
                 resetUI();
             }
         } else {
+            // END OF SINGLE TRACK
             resetUI();
         }
     };
